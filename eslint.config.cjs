@@ -1,3 +1,3 @@
 const nextConfig = require('eslint-config-next')
 
-module.exports = nextConfig
+module.exports = [{ ignores: ['_archive/**', '.next/**', 'node_modules/**'] }, ...nextConfig]
