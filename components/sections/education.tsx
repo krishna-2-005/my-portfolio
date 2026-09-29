@@ -1,12 +1,13 @@
+import { Reveal, RevealItem } from '@/components/motion/reveal'
 import Section from '@/components/section'
 import { education } from '@/content/experience'
 
 export default function Education() {
   return (
     <Section id="education" title="Education" eyebrow="02">
-      <ol className="relative space-y-10 border-l border-border pl-8">
+      <Reveal as="ol" className="relative space-y-10 border-l border-border pl-8" stagger={0.14}>
         {education.map((edu) => (
-          <li key={edu.title} className="relative">
+          <RevealItem as="li" key={edu.title} className="relative">
             <span
               className="absolute -left-[2.3rem] top-1.5 size-3 rounded-full bg-primary ring-4 ring-background"
               aria-hidden="true"
@@ -22,9 +23,9 @@ export default function Education() {
                 </li>
               ))}
             </ul>
-          </li>
+          </RevealItem>
         ))}
-      </ol>
+      </Reveal>
     </Section>
   )
 }

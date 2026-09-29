@@ -1,13 +1,15 @@
 import Image from 'next/image'
+import { Reveal, RevealItem } from '@/components/motion/reveal'
 import Section from '@/components/section'
 import { certifications } from '@/content/certifications'
 
 export default function Certifications() {
   return (
     <Section id="certifications" title="Certifications & Badges" eyebrow="07">
-      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <Reveal as="ul" className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3" stagger={0.06}>
         {certifications.map((cert) => (
-          <li
+          <RevealItem
+            as="li"
             key={cert.title}
             className="shine-on-hover flex flex-col gap-4 rounded-xl border border-border bg-surface-1 p-5 transition-colors duration-(--dur-base) hover:border-primary/50"
           >
@@ -48,9 +50,9 @@ export default function Certifications() {
                 </svg>
               </a>
             )}
-          </li>
+          </RevealItem>
         ))}
-      </ul>
+      </Reveal>
     </Section>
   )
 }

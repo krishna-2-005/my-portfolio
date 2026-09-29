@@ -1,6 +1,11 @@
 import type { Metadata, Viewport } from 'next'
 import { Bricolage_Grotesque, Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import Background from '@/components/motion/background'
+import Cursor from '@/components/motion/cursor'
+import Preloader, { introScript } from '@/components/motion/preloader'
+import ScrollProgress from '@/components/motion/scroll-progress'
+import Providers from '@/components/providers'
 import './globals.css'
 
 const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' })
@@ -32,9 +37,25 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable}`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+        <noscript>
+          <style>{'.preloader{display:none!important}[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}'}</style>
+        </noscript>
+      </head>
       <body>
-        {children}
+        <Background />
+        <Providers>
+          <Preloader />
+          <ScrollProgress />
+          {children}
+          <Cursor />
+        </Providers>
         <Analytics />
       </body>
     </html>

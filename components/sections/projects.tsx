@@ -1,3 +1,4 @@
+import { Reveal, RevealItem } from '@/components/motion/reveal'
 import Section from '@/components/section'
 import { projects } from '@/content/projects'
 import type { ProjectStatus } from '@/content/types'
@@ -13,11 +14,12 @@ const statusStyles: Record<ProjectStatus, string> = {
 export default function Projects() {
   return (
     <Section id="projects" title="Featured Projects" eyebrow="04">
-      <div className="space-y-4">
+      <Reveal className="space-y-4" stagger={0.1}>
         {projects.map((project) => (
-          <article
+          <RevealItem
+            as="article"
             key={project.slug}
-            className="shine-on-hover rounded-xl border border-border bg-surface-1 p-6 transition-[border-color,transform] duration-(--dur-base) ease-out-expo hover:-translate-y-1 hover:border-primary/50 md:p-8"
+            className="shine-on-hover rounded-xl border border-border bg-surface-1 p-6 transition-colors duration-(--dur-base) hover:border-primary/50 md:p-8"
           >
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
@@ -54,9 +56,9 @@ export default function Projects() {
                 </li>
               ))}
             </ul>
-          </article>
+          </RevealItem>
         ))}
-      </div>
+      </Reveal>
     </Section>
   )
 }

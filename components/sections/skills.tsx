@@ -1,12 +1,13 @@
+import { Reveal, RevealItem } from '@/components/motion/reveal'
 import Section from '@/components/section'
 import { skillCategories } from '@/content/skills'
 
 export default function Skills() {
   return (
     <Section id="skills" title="Technical Skills" eyebrow="03">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {skillCategories.map((category) => (
-          <div
+          <RevealItem
             key={category.title}
             className="shine-on-hover rounded-xl border border-border bg-surface-1 p-6 transition-colors duration-(--dur-base) hover:border-primary/50"
           >
@@ -21,9 +22,9 @@ export default function Skills() {
                 </li>
               ))}
             </ul>
-          </div>
+          </RevealItem>
         ))}
-      </div>
+      </Reveal>
     </Section>
   )
 }
