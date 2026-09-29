@@ -18,7 +18,7 @@ export default function Home() {
         Skip to content
       </a>
       <Navigation />
-      <main id="main" className="relative isolate">
+      <main id="main" tabIndex={-1} className="relative isolate outline-none">
         <Hero />
         <About />
         <Skills />

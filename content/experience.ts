@@ -14,7 +14,7 @@ export const education: EducationItem[] = [
     title: 'Class XII – MPC (Telangana State Board)',
     institution: 'Vignan Junior College, Hyderabad',
     period: '2021 – 2023',
-    details: ['Percentage: 99%'],
+    details: ['Percentage: 99%', 'State Third Rank, Telangana – 2023'],
   },
   {
     title: 'Class X (Telangana State Board)',

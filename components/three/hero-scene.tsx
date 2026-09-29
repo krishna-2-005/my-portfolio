@@ -124,7 +124,7 @@ export default function HeroScene({ still, paused, onReady }: SceneProps) {
       {/* Light rig baked into the env map — no HDR download. */}
       <Environment resolution={128} frames={1}>
         <Lightformer form="rect" intensity={4} color={PRIMARY} position={[-4, 2, 3]} scale={[6, 3, 1]} />
-        <Lightformer form="ring" intensity={5} color={ACCENT} position={[4, -1, 2]} scale={[4, 4, 1]} />
+        <Lightformer form="rect" intensity={4} color={ACCENT} position={[4, -1, 2]} scale={[2, 5, 1]} />
         <Lightformer form="rect" intensity={3} color={PRIMARY} position={[5, 2, -1]} rotation-y={-Math.PI / 2} scale={[6, 4, 1]} />
         <Lightformer form="rect" intensity={2} color={BLUE} position={[0, -4, 1]} scale={[8, 2, 1]} />
         <Lightformer form="rect" intensity={1.5} color="#ffffff" position={[0, 5, -3]} scale={[8, 2, 1]} />

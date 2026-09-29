@@ -3,17 +3,18 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { toast } from 'sonner'
 import { contactCopy, profile } from '@/content/profile'
+import { contactSchema, type ContactInput } from '@/lib/contact-schema'
 import { cn } from '@/lib/utils'
 
-const schema = z.object({
-  name: z.string().trim().min(2, 'Please enter your name.').max(80),
-  email: z.string().trim().email('Please enter a valid email.'),
-  message: z.string().trim().min(10, 'A little more detail, please (10+ characters).').max(2000),
-})
+type FormValues = ContactInput
 
-type FormValues = z.infer<typeof schema>
+function mailtoFor(values: FormValues) {
+  const subject = encodeURIComponent(`Portfolio message from ${values.name}`)
+  const body = encodeURIComponent(`${values.message}\n\n— ${values.name} (${values.email})`)
+  return `mailto:${profile.email}?subject=${subject}&body=${body}`
+}
 
 const fieldClass =
   'w-full rounded-lg border border-input bg-surface-1 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-[border-color,box-shadow] duration-(--dur-fast) focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 aria-[invalid=true]:border-destructive'
@@ -26,19 +27,49 @@ export default function ContactForm() {
     setValue,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>({ resolver: zodResolver(schema), defaultValues: { name: '', email: '', message: '' } })
+  } = useForm<FormValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: { name: '', email: '', message: '', company: '' },
+  })
 
-  const onSubmit = (values: FormValues) => {
-    const subject = encodeURIComponent(`Portfolio message from ${values.name}`)
-    const body = encodeURIComponent(`${values.message}\n\n— ${values.name} (${values.email})`)
-    window.location.assign(`mailto:${profile.email}?subject=${subject}&body=${body}`)
-    setSent(true)
-    reset()
+  const emailInstead = (values: FormValues) => ({
+    label: 'Email instead',
+    onClick: () => window.location.assign(mailtoFor(values)),
+  })
+
+  const onSubmit = async (values: FormValues) => {
+    setSent(false)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      })
+      const data = (await res.json().catch(() => ({}))) as { error?: string; code?: string }
+      if (res.ok) {
+        toast.success('Message sent', { description: contactCopy.successMessage })
+        setSent(true)
+        reset()
+      } else if (data.code === 'not_configured') {
+        // No email service configured yet — hand the message to the visitor's mail app.
+        toast.info('Opening your email app', { description: 'Your message is filled in — just press send.' })
+        window.location.assign(mailtoFor(values))
+      } else {
+        toast.error('Message not sent', { description: data.error ?? 'Something went wrong.', action: emailInstead(values) })
+      }
+    } catch {
+      toast.error('You seem to be offline', { action: emailInstead(values) })
+    }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="glass rounded-2xl p-5 md:p-6">
       <div className="space-y-3">
+        {/* Honeypot: off-screen and out of the tab order; bots fill it in, people never see it. */}
+        <div aria-hidden="true" className="absolute -left-[9999px] size-px overflow-hidden">
+          <label htmlFor="contact-company">Company</label>
+          <input id="contact-company" type="text" tabIndex={-1} autoComplete="off" {...register('company')} />
+        </div>
         <div>
           <label htmlFor="contact-name" className="sr-only">
             Your Name
@@ -119,7 +150,7 @@ export default function ContactForm() {
           disabled={isSubmitting}
           className="inline-flex h-11 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-semibold text-accent-foreground transition-[filter,transform] duration-(--dur-fast) hover:brightness-110 active:translate-y-px disabled:opacity-60"
         >
-          Send message
+          {isSubmitting ? 'Sending…' : 'Send message'}
           <svg viewBox="0 0 512 512" className="size-4" aria-hidden="true">
             <path
               fill="currentColor"
