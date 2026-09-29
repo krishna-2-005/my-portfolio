@@ -1,31 +1,38 @@
 import Image from 'next/image'
 import DownloadSwitch from '@/components/download-switch'
+import HeroCanvas from '@/components/hero/hero-canvas'
+import HeroFade from '@/components/hero/hero-fade'
+import HeroName from '@/components/hero/hero-name'
+import TiltCard from '@/components/hero/tilt-card'
+import Magnetic from '@/components/motion/magnetic'
 import SocialIcons from '@/components/social-icons'
 import ViewProjectsButton from '@/components/view-projects-button'
 import { profile } from '@/content/profile'
 
 function ProfileCard() {
   return (
-    <div className="relative mx-auto w-full max-w-sm">
-      <div className="glass noise relative aspect-[3/4] overflow-hidden rounded-2xl shadow-2xl shadow-primary/20">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-accent/10" />
-        <div className="absolute -left-8 top-10 size-28 animate-float rounded-full bg-primary/30 blur-3xl" />
-        <div className="absolute -right-10 bottom-10 size-16 animate-float rounded-full bg-accent/30 blur-2xl [animation-delay:200ms]" />
-
+    <TiltCard className="mx-auto w-full max-w-[22rem]">
+      {/* Frosted layer is a sibling, not the 3D parent: backdrop-filter would flatten preserve-3d. */}
+      <div className="glass absolute inset-0 rounded-2xl shadow-[0_30px_80px_-20px_color-mix(in_oklch,var(--primary)_45%,transparent)]" />
+      <div className="relative aspect-[3/4] overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-background/70" />
         <Image
           src={profile.photo}
           alt={profile.fullName}
           fill
           priority
-          sizes="(min-width: 768px) 384px, 90vw"
-          className="object-contain"
+          sizes="(min-width: 768px) 352px, 90vw"
+          className="object-contain object-bottom"
         />
-
-        <figure className="absolute inset-x-5 bottom-5 rounded-xl border border-border/60 bg-background/75 px-4 py-3 backdrop-blur-md">
-          <blockquote className="text-center text-sm text-muted-foreground">&ldquo;{profile.quote}&rdquo;</blockquote>
-        </figure>
       </div>
-    </div>
+      <figure className="absolute inset-x-4 bottom-4 rounded-xl border border-border/70 bg-surface-1/90 px-4 py-3 shadow-xl [transform:translateZ(48px)]">
+        <blockquote className="text-center text-sm text-muted-foreground">&ldquo;{profile.quote}&rdquo;</blockquote>
+      </figure>
+      <div className="absolute -right-3 top-6 rounded-full border border-accent/40 bg-surface-1/90 px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-accent shadow-lg [transform:translateZ(70px)]">
+        <span className="mr-1.5 inline-block size-1.5 animate-pulse rounded-full bg-accent align-middle" aria-hidden="true" />
+        Open to internships
+      </div>
+    </TiltCard>
   )
 }
 
@@ -34,35 +41,56 @@ export default function Hero() {
     <section
       id="home"
       aria-labelledby="home-title"
-      className="relative flex min-h-svh items-center overflow-hidden pb-16 pt-28"
+      className="relative isolate flex min-h-svh items-center overflow-hidden pb-20 pt-28"
     >
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_75%_40%,color-mix(in_oklch,var(--primary)_22%,transparent),transparent_70%),radial-gradient(40%_40%_at_15%_80%,color-mix(in_oklch,var(--accent)_10%,transparent),transparent_70%)]"
-        aria-hidden="true"
-      />
-      <div className="container-page grid grid-cols-1 items-center gap-14 md:grid-cols-[1.2fr_1fr]">
+      <HeroCanvas />
+
+      <div className="container-page grid grid-cols-1 items-center gap-14 md:grid-cols-[1.25fr_1fr]">
         <div className="space-y-8">
-          <div className="space-y-5">
-            <h1 id="home-title" className="text-display font-semibold">
-              <span className="text-gradient-animated">{profile.firstName}</span>
-              <br />
-              <span>{profile.lastName}</span>
-            </h1>
-            <p className="text-lead font-light text-muted-foreground">{profile.headline}</p>
+          <div className="space-y-6">
+            <HeroName
+              id="home-title"
+              lines={[{ text: profile.firstName, gradient: true }, { text: profile.lastName }]}
+            />
+            <HeroFade delay={0.55}>
+              <p className="max-w-xl text-lead font-light text-foreground/85">{profile.headline}</p>
+            </HeroFade>
           </div>
 
-          <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">{profile.tagline}</p>
+          <HeroFade delay={0.7}>
+            <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">{profile.tagline}</p>
+          </HeroFade>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <DownloadSwitch />
-            <ViewProjectsButton href="#projects" />
-          </div>
+          <HeroFade delay={0.85} className="flex flex-wrap items-center gap-3 pt-2">
+            <Magnetic>
+              <DownloadSwitch />
+            </Magnetic>
+            <Magnetic>
+              <ViewProjectsButton href="#projects" />
+            </Magnetic>
+          </HeroFade>
 
-          <SocialIcons className="-ml-3 pt-4" />
+          <HeroFade delay={1}>
+            <SocialIcons className="-ml-3" />
+          </HeroFade>
         </div>
 
-        <ProfileCard />
+        <HeroFade delay={0.35} variant="scale">
+          <ProfileCard />
+        </HeroFade>
       </div>
+
+      <HeroFade delay={1.2} className="absolute inset-x-0 bottom-6 hidden justify-center md:flex">
+        <a
+          href="#about"
+          className="group flex flex-col items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Scroll
+          <span className="relative h-10 w-px overflow-hidden bg-border" aria-hidden="true">
+            <span className="absolute inset-x-0 top-0 h-1/2 animate-[scroll-cue_1.8s_var(--ease-in-out-quart)_infinite] bg-accent" />
+          </span>
+        </a>
+      </HeroFade>
     </section>
   )
 }

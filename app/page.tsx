@@ -1,12 +1,10 @@
 import Footer from '@/components/footer'
 import Navigation from '@/components/navigation'
 import About from '@/components/sections/about'
-import Achievements from '@/components/sections/achievements'
 import Certifications from '@/components/sections/certifications'
 import Contact from '@/components/sections/contact'
-import Education from '@/components/sections/education'
 import Hero from '@/components/sections/hero'
-import Leadership from '@/components/sections/leadership'
+import Journey from '@/components/sections/journey'
 import Projects from '@/components/sections/projects'
 import Skills from '@/components/sections/skills'
 
@@ -23,11 +21,9 @@ export default function Home() {
       <main id="main" className="relative isolate">
         <Hero />
         <About />
-        <Education />
         <Skills />
         <Projects />
-        <Achievements />
-        <Leadership />
+        <Journey />
         <Certifications />
         <Contact />
       </main>

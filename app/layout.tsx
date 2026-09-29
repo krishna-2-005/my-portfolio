@@ -3,9 +3,10 @@ import { Bricolage_Grotesque, Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import Background from '@/components/motion/background'
 import Cursor from '@/components/motion/cursor'
-import Preloader, { introScript } from '@/components/motion/preloader'
+import Preloader from '@/components/motion/preloader'
 import ScrollProgress from '@/components/motion/scroll-progress'
 import Providers from '@/components/providers'
+import { introScript } from '@/lib/intro'
 import './globals.css'
 
 const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' })

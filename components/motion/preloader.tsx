@@ -3,15 +3,8 @@
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { profile } from '@/content/profile'
+import { markIntroDone } from '@/lib/intro'
 import { ease } from '@/lib/motion'
-
-export const INTRO_KEY = 'ksk-intro'
-
-/**
- * Inline script run before first paint: skips the intro on repeat visits in this
- * session and for reduced motion, so the overlay never flashes.
- */
-export const introScript = `try{if(sessionStorage.getItem('${INTRO_KEY}')||matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.intro='done'}catch(e){document.documentElement.dataset.intro='done'}`
 
 const COUNT_S = 0.75
 const EXIT_S = 0.45
@@ -28,14 +21,6 @@ export default function Preloader() {
     const el = overlay.current
     let exit: ReturnType<typeof animate> | undefined
 
-    const finish = () => {
-      root.dataset.intro = 'done'
-      try {
-        sessionStorage.setItem(INTRO_KEY, '1')
-      } catch {
-        /* storage blocked — intro simply plays again next time */
-      }
-    }
     const counter = animate(count, 100, {
       duration: COUNT_S,
       ease: ease.inOutQuart,
@@ -43,7 +28,7 @@ export default function Preloader() {
         exit = animate(
           el,
           { clipPath: 'inset(0 0 100% 0)' },
-          { duration: EXIT_S, ease: ease.inOutQuart, onComplete: finish },
+          { duration: EXIT_S, ease: ease.inOutQuart, onComplete: markIntroDone },
         )
       },
     })

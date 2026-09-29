@@ -31,14 +31,14 @@ export default function DownloadSwitch() {
       rel="noopener noreferrer"
       onClick={handleClick}
       className={cn(
-        'group relative inline-flex h-14 items-center gap-3 rounded-full border-2 border-primary p-1 pr-6 font-semibold text-foreground transition-colors duration-(--dur-base)',
-        active && 'border-success',
+        'group relative inline-flex h-14 items-center gap-3 rounded-full bg-accent p-1.5 pr-6 font-semibold text-accent-foreground shadow-[0_0_0_0_var(--accent)] transition-[background-color,box-shadow] duration-(--dur-base) ease-out-expo hover:shadow-[0_10px_40px_-8px_var(--accent)]',
+        active && 'bg-success',
       )}
     >
       <span
         className={cn(
-          'relative grid size-11 place-items-center overflow-hidden rounded-full bg-primary text-primary-foreground transition-colors duration-(--dur-base)',
-          active && 'bg-success',
+          'relative grid size-11 place-items-center overflow-hidden rounded-full bg-accent-foreground text-accent transition-colors duration-(--dur-base)',
+          active && 'text-success',
         )}
       >
         <svg

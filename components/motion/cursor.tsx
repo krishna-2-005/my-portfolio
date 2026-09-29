@@ -2,15 +2,13 @@
 
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { FINE_POINTER, REDUCED_MOTION, useMediaQuery } from '@/lib/use-media-query'
+import { usePointerEffects } from '@/lib/use-media-query'
 
 const TARGETS = 'a, button, [role="button"], label, summary, [data-cursor]'
 
 /** Dot + trailing ring. Only mounts its listeners on a fine pointer with motion allowed. */
 export default function Cursor() {
-  const finePointer = useMediaQuery(FINE_POINTER)
-  const reduced = useMediaQuery(REDUCED_MOTION)
-  const enabled = finePointer && !reduced
+  const enabled = usePointerEffects()
 
   const x = useMotionValue(-100)
   const y = useMotionValue(-100)

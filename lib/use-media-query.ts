@@ -17,3 +17,10 @@ export function useMediaQuery(query: string): boolean {
 
 export const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 export const FINE_POINTER = '(hover: hover) and (pointer: fine)'
+
+/** Pointer-driven effects (tilt, magnetic, cursor): a real mouse and motion allowed. */
+export function usePointerEffects(): boolean {
+  const fine = useMediaQuery(FINE_POINTER)
+  const reduced = useMediaQuery(REDUCED_MOTION)
+  return fine && !reduced
+}

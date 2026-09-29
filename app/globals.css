@@ -224,6 +224,15 @@ html.lenis {
   }
 }
 
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
 @keyframes glow-spin {
   to {
     --glow-angle: 360deg;
@@ -347,6 +356,47 @@ html.lenis {
   &:hover::after,
   &:focus-within::after {
     transform: translateX(100%);
+  }
+}
+
+/* Pointer-following glow + border highlight; --mx/--my are set by SpotlightCard. */
+@utility spotlight {
+  position: relative;
+  isolation: isolate;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out-expo);
+    pointer-events: none;
+  }
+  &::before {
+    z-index: -1;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklch, var(--primary) 16%, transparent),
+      transparent 45%
+    );
+  }
+  &::after {
+    padding: 1px;
+    background: radial-gradient(
+      240px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklch, var(--accent) 75%, transparent),
+      transparent 65%
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
   }
 }
 

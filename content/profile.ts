@@ -48,9 +48,9 @@ export const contactCopy = {
 export const navItems = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
-  { id: 'education', label: 'Education' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
+  { id: 'education', label: 'Education' },
   { id: 'achievements', label: 'Achievements' },
   { id: 'leadership', label: 'Leadership' },
   { id: 'certifications', label: 'Certifications' },
