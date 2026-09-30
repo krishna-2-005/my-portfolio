@@ -5,14 +5,14 @@ import { skillIcons, type SkillIcon } from '@/content/skill-icons'
 import { skillCategories } from '@/content/skills'
 import { cn } from '@/lib/utils'
 
-/** Bento placement per category, in content order: a zig-zag of narrow/wide rows. */
+/** Bento placement per category, in content order: rows of 3+3, 4+2, 3+3 (of 6 columns). */
 const layout = [
-  { span: 'lg:col-span-2', cols: 'grid-cols-1' },
-  { span: 'lg:col-span-4', cols: 'grid-cols-2 sm:grid-cols-3' },
+  { span: 'lg:col-span-3', cols: 'grid-cols-2 sm:grid-cols-3' },
+  { span: 'lg:col-span-3', cols: 'grid-cols-2 sm:grid-cols-3' },
   { span: 'lg:col-span-4', cols: 'grid-cols-2 sm:grid-cols-3' },
   { span: 'lg:col-span-2', cols: 'grid-cols-2' },
-  { span: 'lg:col-span-3', cols: 'grid-cols-2' },
-  { span: 'lg:col-span-3', cols: 'grid-cols-2' },
+  { span: 'lg:col-span-3', cols: 'grid-cols-2 sm:grid-cols-3' },
+  { span: 'lg:col-span-3', cols: 'grid-cols-2 sm:grid-cols-3' },
 ]
 
 function Glyph({ icon }: { icon?: SkillIcon }) {

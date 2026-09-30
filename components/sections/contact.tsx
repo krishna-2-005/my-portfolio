@@ -5,7 +5,7 @@ import { contactCopy, contactInfo } from '@/content/profile'
 
 export default function Contact() {
   return (
-    <Section id="contact" title="Get In Touch" eyebrow="08">
+    <Section id="contact" title="Get In Touch" eyebrow="09">
       <Reveal className="grid grid-cols-1 gap-12 lg:grid-cols-2" stagger={0.15}>
         <RevealItem className="space-y-6">
           <p className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-medium text-accent">

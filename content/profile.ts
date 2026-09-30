@@ -11,6 +11,7 @@ export const profile = {
   photo: '/profile-cutout.webp',
   resumeUrl: 'https://drive.google.com/file/d/1_LvmLBLdMovB4ftwMyY59UbUDEbSv1sg/view?usp=sharing',
   email: 'kuchurusaikrishnareddy@gmail.com',
+  credly: 'https://www.credly.com/users/sai-krishna-reddy-kuchuru',
 } as const
 
 export const socials: SocialLink[] = [
@@ -50,6 +51,7 @@ export const navItems = [
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
+  { id: 'experience', label: 'Experience' },
   { id: 'education', label: 'Education' },
   { id: 'achievements', label: 'Achievements' },
   { id: 'leadership', label: 'Leadership' },

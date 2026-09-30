@@ -1,6 +1,14 @@
 import type { Certification } from './types'
 
+const CREDLY = 'https://www.credly.com/users/sai-krishna-reddy-kuchuru'
+
 export const certifications: Certification[] = [
+  {
+    title: 'AWS Cloud Foundations',
+    issuer: 'AWS',
+    issued: '2026',
+    badge: CREDLY,
+  },
   {
     title: 'AWS Academy Machine Learning Foundations',
     issuer: 'AWS Academy',
@@ -38,6 +46,17 @@ export const certifications: Certification[] = [
     issued: 'Oct 27, 2025',
     badge: 'https://www.credly.com/badges/d321c58f-9a6a-4855-bee9-542d72538d67/public_url',
     image: '/certificates/operating-systems-basics.webp',
+  },
+  {
+    title: 'MongoDB CRUD',
+    issuer: 'MongoDB',
+    issued: '2025',
+    badge: CREDLY,
+  },
+  {
+    title: 'Microsoft Fabric Data Analytics',
+    issuer: 'Microsoft',
+    badge: CREDLY,
   },
   {
     title: 'Set Up an App Dev Environment on Google Cloud Skill Badge',

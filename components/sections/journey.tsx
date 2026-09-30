@@ -4,44 +4,84 @@ import { motion, useInView, useScroll, useSpring, useTransform } from 'framer-mo
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import SectionHeading from '@/components/motion/section-heading'
 import { Reveal, RevealItem } from '@/components/motion/reveal'
-import { achievements, education, leadership } from '@/content/experience'
+import { achievements, education, experience, leadership } from '@/content/experience'
 import { REDUCED_MOTION, useMediaQuery } from '@/lib/use-media-query'
 
 type Entry = { key: string; date: string; title: string; subtitle?: string; icon?: string; body: ReactNode }
 type Group = { id: string; title: string; eyebrow: string; entries: Entry[] }
 
+function Bullets({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-2">
+      {items.map((d) => (
+        <li key={d} className="flex gap-3">
+          <span className="mt-2.5 size-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+          <span>{d}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 const groups: Group[] = [
+  {
+    id: 'experience',
+    title: 'Experience',
+    eyebrow: '04',
+    entries: experience.map((x) => ({
+      key: x.company,
+      date: x.period,
+      title: x.role,
+      subtitle: `${x.company} · ${x.mode}`,
+      body: (
+        <>
+          <Bullets items={x.points} />
+          {x.links && (
+            <ul className="mt-5 flex flex-wrap gap-2" aria-label={`${x.company} project repositories`}>
+              {x.links.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-xs font-medium text-foreground/90 transition-colors hover:border-primary/60 hover:text-foreground"
+                  >
+                    {l.label}
+                    <svg viewBox="0 0 24 24" className="size-3" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                      <path d="M7 17 17 7M7 7h10v10" />
+                    </svg>
+                    <span className="sr-only"> on GitHub (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      ),
+    })),
+  },
   {
     id: 'education',
     title: 'Education',
-    eyebrow: '04',
+    eyebrow: '05',
     entries: education.map((e) => ({
       key: e.title,
       date: e.period,
       title: e.title,
       subtitle: e.institution,
-      body: (
-        <ul className="space-y-2">
-          {e.details.map((d) => (
-            <li key={d} className="flex gap-3">
-              <span className="mt-2.5 size-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-              <span>{d}</span>
-            </li>
-          ))}
-        </ul>
-      ),
+      body: <Bullets items={e.details} />,
     })),
   },
   {
     id: 'achievements',
     title: 'Achievements & Awards',
-    eyebrow: '05',
+    eyebrow: '06',
     entries: achievements.map((a) => ({ key: a.title, date: a.date, title: a.title, icon: a.icon, body: a.description })),
   },
   {
     id: 'leadership',
     title: 'Leadership & Community',
-    eyebrow: '06',
+    eyebrow: '07',
     entries: leadership.map((l) => ({ key: l.role, date: l.period, title: l.role, body: l.description })),
   },
 ]
@@ -83,7 +123,7 @@ function TimelineGroup({ group }: { group: Group }) {
       <Reveal as="ol" className="space-y-6" stagger={0.1}>
         {group.entries.map((entry) => (
           <RevealItem as="li" key={entry.key} className={row}>
-            <p className="hidden pr-6 pt-1 text-right font-mono text-sm tabular-nums text-muted-foreground md:block">
+            <p className="hidden text-balance pr-6 pt-1 text-right font-mono text-sm tabular-nums text-muted-foreground md:block">
               {entry.date}
             </p>
             <div className="flex justify-center">

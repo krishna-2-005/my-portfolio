@@ -102,7 +102,7 @@ export default function Portrait() {
           <span className="leading-tight">
             <span className="block font-mono text-[10px] uppercase tracking-widest text-accent">CGPA · NMIMS</span>
             <span className="block font-display text-lg font-semibold tabular-nums">
-              3.73<span className="text-sm text-muted-foreground"> / 4.0</span>
+              3.74<span className="text-sm text-muted-foreground"> / 4.0</span>
             </span>
           </span>
         </Chip>

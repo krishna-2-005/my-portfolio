@@ -76,6 +76,10 @@ const motifs = {
     <path d="M${c.x - 70} ${c.y - 40}c30-60 110-50 130 0s-10 100-70 100-90-40-60-100z" ${line(0.9, 'fill="#fff" fill-opacity="0.18"')}/>
     <path d="M${c.x - 200} ${c.y}h60M${c.x + 140} ${c.y}h60M${c.x} ${c.y - 200}v60M${c.x} ${c.y + 140}v60" ${line()}/>
     <rect x="${c.x - 130}" y="${c.y - 130}" width="260" height="260" rx="18" ${line(0.5)} stroke-dasharray="16 14"/>`,
+  'hack-score': (c) => `
+    ${[[-150, 150], [0, 230], [150, 110]].map(([dx, h], i) => `<rect x="${c.x + dx - 55}" y="${c.y + 170 - h}" width="110" height="${h}" rx="10" ${line(i === 1 ? 0.95 : 0.55)}/>`).join('')}
+    <path d="M${c.x - 40} ${c.y - 150}l20 30 20-40 20 40 20-30-10 60h-60z" ${line(0.95, 'fill="#fff" fill-opacity="0.9"')}/>
+    <path d="M${c.x - 260} ${c.y + 170}h520" ${line(0.5)}/>`,
   'nmims-events': (c) => `
     <rect x="${c.x - 200}" y="${c.y - 160}" width="400" height="320" rx="24" ${line()}/>
     <path d="M${c.x - 200} ${c.y - 90}h400M${c.x - 120} ${c.y - 190}v60M${c.x + 120} ${c.y - 190}v60" ${line()}/>
@@ -115,6 +119,7 @@ const projects = {
   'land-lekha': 'Live Demo',
   'deepfake-detection': 'In Development',
   'skin-cancer': 'Prototype',
+  'hack-score': 'Live Demo',
 }
 
 fs.mkdirSync(out, { recursive: true })

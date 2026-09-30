@@ -9,6 +9,15 @@ export type ContactItem = {
   href: string
 }
 
+export type ExperienceItem = {
+  role: string
+  company: string
+  mode: string
+  period: string
+  points: string[]
+  links?: { label: string; href: string }[]
+}
+
 export type EducationItem = {
   title: string
   institution: string

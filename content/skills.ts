@@ -2,27 +2,27 @@ import type { SkillCategory } from './types'
 
 export const skillCategories: SkillCategory[] = [
   {
-    title: 'Programming Languages',
-    skills: ['Python', 'C++', 'JavaScript'],
+    title: 'Languages',
+    skills: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'PHP', 'C++', 'HTML/CSS'],
   },
   {
-    title: 'Web & Full-Stack',
-    skills: ['HTML', 'CSS', 'React', 'AngularJS', 'Node.js', 'PHP'],
+    title: 'Frontend',
+    skills: ['React', 'Next.js', 'Tailwind CSS', 'Chart.js', 'Recharts'],
   },
   {
-    title: 'Data Science & Analytics',
-    skills: ['Pandas', 'NumPy', 'Scikit-learn', 'Power BI', 'Matplotlib', 'Seaborn'],
+    title: 'Backend & Databases',
+    skills: ['Node.js', 'FastAPI', 'REST APIs', 'PostgreSQL', 'Supabase', 'MySQL', 'MariaDB', 'MongoDB', 'Firebase'],
   },
   {
-    title: 'Databases & Backend',
-    skills: ['SQL', 'Firebase', 'Supabase', 'XAMPP'],
+    title: 'Cloud & DevOps',
+    skills: ['AWS', 'Docker', 'Vercel', 'Apache', 'Git & GitHub'],
   },
   {
-    title: 'Tools & Platforms',
-    skills: ['Git & GitHub', 'VS Code', 'Google Cloud Platform', 'Google Colab'],
+    title: 'AI & Machine Learning',
+    skills: ['TensorFlow', 'Scikit-learn', 'OpenCV', 'Pandas', 'NumPy', 'Transfer Learning', 'Grad-CAM'],
   },
   {
-    title: 'Hardware & Smart Systems',
-    skills: ['Arduino', 'AutoCAD', 'TinkerCAD'],
+    title: 'Data & Forecasting',
+    skills: ['SARIMA', 'Prophet', 'XGBoost', 'Anomaly Detection', 'K-Means / PCA', 'Streamlit', 'Power BI'],
   },
 ]

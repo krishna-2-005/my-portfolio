@@ -97,7 +97,7 @@ export default function Navigation() {
           </a>
 
           <ul className="hidden items-center gap-0.5 rounded-full border border-border/60 bg-surface-1/60 p-1 backdrop-blur-md lg:flex">
-            {navItems.map((item) => {
+            {navItems.filter((item) => item.id !== 'home').map((item) => {
               const isActive = active === item.id
               return (
                 <li key={item.id} className="relative">

@@ -9,27 +9,41 @@ export const projects: Project[] = [
   // ---------------------------------------------------------------- Full Stack
   {
     slug: 'diagnostics-center',
-    title: 'Diagnostics Center Management System',
+    title: 'Business Analysis Web Application – Divya Imaging Centre',
     category: 'fullstack',
     status: 'Deployed',
     location: 'Vijayawada',
-    period: 'July 2025 – Present',
-    tech: ['PHP', 'HTML', 'CSS', 'JavaScript', 'SQL'],
+    period: '2026 – Ongoing',
+    tech: ['PHP', 'MariaDB', 'Apache', 'Docker', 'PHPMailer'],
     description:
-      'Designed and developed a full-stack management system deployed at a diagnostics center in Vijayawada, currently in active use. Handles patient registration, diagnostic test records, billing, and report generation. Centralized database improved operational efficiency, reduced manual paperwork, and ensured accurate data handling.',
-    github: 'https://github.com/krishna-2-005/DiagnosticsCenter-Management.git',
+      'Full-stack business-analysis web application for a real client, a diagnostics imaging centre, with secure role-based authentication and authorization, admin dashboards, and employee credential management for Admin and End-User roles. Redesigned the complete billing structure with approval-driven, workflow-based business logic; automated radiology report writing with auto-filled patient data templates; and built referral-analysis, pending-bill and week/month comparative dashboards.',
+    highlight: 'Deployed live with domain configuration, port forwarding and SSL security — in active use',
+    team: 'Real client',
   },
   {
     slug: 'ica-tracker',
-    title: 'ICA Tracker System',
+    title: 'ICA Tracker – Academic Assessment Platform',
     category: 'fullstack',
     status: 'Deployed',
     location: 'NMIMS Hyderabad',
-    period: 'March 2025 – December 2025',
-    tech: ['PHP', 'HTML', 'CSS', 'JavaScript', 'SQL', 'XAMPP'],
+    period: '2025 – 2026',
+    tech: ['PHP', 'MySQL', 'JavaScript', 'Chart.js', 'PHPMailer'],
     description:
-      'Designed, developed, and deployed an Internal Continuous Assessment (ICA) Tracker used within NMIMS Hyderabad. Enables students and faculty to monitor academic performance and assessment records. Improved transparency and reduced manual effort in academic data management.',
-    github: 'https://github.com/krishna-2-005/ica_tracker.git',
+      'Multi-role Internal Continuous Assessment (ICA) platform spanning class configuration, subject allocation, component design, marks operations, and timetable management. Term-aware, role-specific pipelines for Admin, Program Chair, Faculty, Student, and System Admin with CSV bulk onboarding and an SMTP notification engine, plus comparative analytics at student, faculty, course, and program level.',
+    highlight: 'Deployed across 450+ students and 25+ faculty at NMIMS Hyderabad',
+  },
+  {
+    slug: 'hack-score',
+    title: 'Hack-Score – Hackathon Judging Platform',
+    category: 'fullstack',
+    status: 'Live Demo',
+    period: '2026',
+    tech: ['Next.js', 'React', 'TypeScript', 'PostgreSQL', 'Supabase', 'Recharts', 'Vercel'],
+    description:
+      'Full-stack hackathon evaluation platform on Next.js (App Router) and a Supabase-hosted PostgreSQL backend. Admins configure events, rounds and rubrics, import teams by CSV and assign judges; judges fill dynamic rubric-bound scorecards with draft/submit states and post-submission score locking; per-round and overall leaderboards come with Recharts visualizations, CSV export, and printable PDF reports.',
+    highlight: 'Admin and Judge authorization enforced in the database with PostgreSQL row-level security',
+    github: 'https://github.com/krishna-2-005/Hack-Score',
+    live: 'https://hack-score.vercel.app',
   },
   {
     slug: 'nmims-events',
@@ -40,6 +54,7 @@ export const projects: Project[] = [
     tech: ['PHP', 'HTML', 'CSS', 'JavaScript', 'SQL', 'XAMPP'],
     description:
       'Designed a user-friendly event management platform for organizing, scheduling, and coordinating institutional events. Recognized for intuitive UI/UX design at Webathon 2.0.',
+    github: 'https://github.com/krishna-2-005/Event-Management',
   },
   {
     slug: 'digielev8',
@@ -122,9 +137,10 @@ export const projects: Project[] = [
     category: 'aiml',
     status: 'Prototype',
     period: 'Mar 2026 – Apr 2026',
-    tech: ['Python', 'TensorFlow', 'FastAPI', 'React', 'Grad-CAM'],
+    tech: ['Python', 'TensorFlow', 'FastAPI', 'React', 'OpenCV', 'Grad-CAM'],
     description:
-      'End-to-end 7-class skin lesion classification on HAM10000 using TensorFlow transfer learning, served through a FastAPI inference endpoint with a React frontend and Grad-CAM visual explanations. Built for education and research — not a medical device.',
+      'Leakage-aware 7-class lesion classifier on HAM10000 (10k+ images), trained by two-phase transfer learning across EfficientNetB0, MobileNetV2 and ResNet50 with class-weighted focal loss and oversampling for label imbalance. A FastAPI inference microservice adds 8-run test-time augmentation and Grad-CAM overlays, and a React/Vite frontend renders per-class probabilities and heatmaps. Built for education and research — not a medical device.',
+    highlight: '85.75% test accuracy on a grouped lesion-ID split that prevents data leakage',
     github: 'https://github.com/krishna-2-005/Skin_Cancer_Detection',
   },
   {
@@ -136,5 +152,6 @@ export const projects: Project[] = [
     tech: ['Python', 'Streamlit', 'Pandas', 'Matplotlib', 'Seaborn'],
     description:
       'Developed a machine learning model to predict customer churn in the telecom domain. Built an interactive dashboard for visual analysis and proactive retention strategies.',
+    github: 'https://github.com/krishna-2-005/Customer-Churn-Prediction',
   },
 ]
