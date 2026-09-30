@@ -90,7 +90,7 @@ function TimelineGroup({ group }: { group: Group }) {
               <Node />
             </div>
             <div className="md:pl-6">
-              <div className="shine-on-hover rounded-2xl border border-border bg-surface-1/80 p-6 backdrop-blur-sm transition-colors duration-(--dur-base) hover:border-primary/50">
+              <div className="shine-on-hover rounded-2xl border border-border bg-surface-1/90 p-6 transition-colors duration-(--dur-base) hover:border-primary/50">
                 <p className="mb-2 font-mono text-xs tabular-nums text-accent md:hidden">{entry.date}</p>
                 <div className="flex items-start gap-4">
                   {entry.icon && (

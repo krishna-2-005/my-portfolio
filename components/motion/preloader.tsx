@@ -25,6 +25,8 @@ export default function Preloader() {
       duration: COUNT_S,
       ease: ease.inOutQuart,
       onComplete: () => {
+        // Start the hero entrance (CSS, see globals.css) while the curtain still covers it.
+        root.dataset.hero = 'play'
         exit = animate(
           el,
           { clipPath: 'inset(0 0 100% 0)' },

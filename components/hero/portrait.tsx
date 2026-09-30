@@ -52,7 +52,7 @@ export default function Portrait() {
     <TiltCard glare={false} max={7} className="relative mx-auto w-full max-w-[25rem]">
       <div className="relative aspect-[4/5]">
         {/* Soft bloom behind everything */}
-        <div className="absolute inset-x-[-10%] bottom-[-6%] top-[18%] rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--primary)_45%,transparent),transparent)] blur-2xl" />
+        <div className="absolute inset-x-[-10%] bottom-[-6%] top-[18%] rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--primary)_40%,transparent),color-mix(in_oklch,var(--primary)_12%,transparent)_60%,transparent)]" />
 
         {/* The disc — a square pinned to the bottom, so its centre sits at 60% of the height */}
         <div className="absolute inset-x-0 bottom-0 aspect-square rounded-full">

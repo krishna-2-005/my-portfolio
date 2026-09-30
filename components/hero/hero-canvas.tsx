@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import { Component, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useIntroDone } from '@/lib/use-intro-done'
 import { REDUCED_MOTION, useMediaQuery } from '@/lib/use-media-query'
 import { cn } from '@/lib/utils'
 
@@ -21,12 +22,21 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
 export default function HeroCanvas() {
   const wrapper = useRef<HTMLDivElement>(null)
   const reduced = useMediaQuery(REDUCED_MOTION)
+  const introDone = useIntroDone()
   const [load, setLoad] = useState(false)
   const [ready, setReady] = useState(false)
   const [onScreen, setOnScreen] = useState(true)
 
-  // Fetch three.js only once the main thread is idle, so it never competes with first paint.
+  // three.js is decorative: skip it on phones, data-saver and low-core devices (the CSS glow
+  // stays), and elsewhere fetch it only after the intro, once the main thread is idle.
   useEffect(() => {
+    if (!introDone) return
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean } }
+    const lowPower =
+      window.matchMedia('(max-width: 767px)').matches ||
+      nav.connection?.saveData === true ||
+      (nav.hardwareConcurrency ?? 8) <= 4
+    if (lowPower) return
     const start = () => setLoad(true)
     if ('requestIdleCallback' in window) {
       const id = window.requestIdleCallback(start, { timeout: 2000 })
@@ -34,7 +44,7 @@ export default function HeroCanvas() {
     }
     const id = setTimeout(start, 600)
     return () => clearTimeout(id)
-  }, [])
+  }, [introDone])
 
   useEffect(() => {
     const el = wrapper.current

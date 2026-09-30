@@ -38,7 +38,7 @@ export default function Skills() {
           const { span, cols } = layout[i] ?? layout[0]
           return (
             <RevealItem key={category.title} className={cn('h-full', span)}>
-              <SpotlightCard className="h-full rounded-2xl border border-border bg-surface-1/80 p-6 backdrop-blur-sm md:p-7">
+              <SpotlightCard className="h-full rounded-2xl border border-border bg-surface-1/90 p-6 md:p-7">
                 <div className="mb-6 flex items-start justify-between gap-4">
                   <div>
                     <p className="font-mono text-xs tabular-nums text-accent">{String(i + 1).padStart(2, '0')}</p>

@@ -1,20 +1,13 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import { useIntroDone } from '@/lib/use-intro-done'
-import { ease } from '@/lib/motion'
-
 type Line = { text: string; gradient?: boolean }
 
 /**
- * The page's single h1. Screen readers get the plain name; the per-letter spans that
- * rise out of their masks are decorative.
+ * The page's single h1. Screen readers get the plain name; the per-letter spans are
+ * decorative and rise out of their masks via the CSS `.hero-char` entrance (globals.css).
  *
  * Gradient lines colour each letter along the purple→cyan ramp: background-clip:text
  * cannot span children that are transformed independently.
  */
 export default function HeroName({ id, lines }: { id: string; lines: Line[] }) {
-  const play = useIntroDone()
   let charIndex = 0
 
   return (
@@ -31,21 +24,20 @@ export default function HeroName({ id, lines }: { id: string; lines: Line[] }) {
                   const i = charIndex++
                   const t = letters > 1 ? letterInLine++ / (letters - 1) : 0
                   return (
-                    <motion.span
+                    <span
                       key={c}
-                      data-reveal=""
-                      className="inline-block will-change-transform"
+                      className="hero-char inline-block"
                       style={
-                        line.gradient
-                          ? { color: `color-mix(in oklch, var(--primary) ${Math.round((1 - t) * 100)}%, var(--accent))` }
-                          : undefined
+                        {
+                          '--d': `${(0.1 + i * 0.028).toFixed(3)}s`,
+                          color: line.gradient
+                            ? `color-mix(in oklch, var(--primary) ${Math.round((1 - t) * 100)}%, var(--accent))`
+                            : undefined,
+                        } as React.CSSProperties
                       }
-                      initial={{ y: '115%', rotate: 8 }}
-                      animate={play ? { y: '0%', rotate: 0 } : undefined}
-                      transition={{ duration: 0.9, ease: ease.outExpo, delay: 0.1 + i * 0.028 }}
                     >
                       {char}
-                    </motion.span>
+                    </span>
                   )
                 })}
               </span>

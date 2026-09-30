@@ -24,11 +24,10 @@ type RevealProps = Omit<HTMLAttributes<HTMLElement>, 'onAnimationStart' | 'onDra
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 28, filter: 'blur(8px)' },
+  hidden: { opacity: 0, y: 28 },
   show: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: { duration: duration.reveal, ease: ease.outExpo },
   },
 }
