@@ -8,7 +8,7 @@ export const profile = {
   headline: 'B.Tech CSE (Data Science) | Full-Stack & Machine Learning Developer',
   tagline: 'Building real-world, data-driven and full-stack systems deployed in production environments.',
   quote: 'Sometimes You Win, Sometimes You Learn',
-  photo: '/profile-photo.webp',
+  photo: '/profile-cutout.webp',
   resumeUrl: 'https://drive.google.com/file/d/1_LvmLBLdMovB4ftwMyY59UbUDEbSv1sg/view?usp=sharing',
   email: 'kuchurusaikrishnareddy@gmail.com',
 } as const

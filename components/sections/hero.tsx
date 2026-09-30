@@ -1,41 +1,12 @@
-import Image from 'next/image'
 import DownloadSwitch from '@/components/download-switch'
 import HeroCanvas from '@/components/hero/hero-canvas'
 import HeroFade from '@/components/hero/hero-fade'
 import HeroName from '@/components/hero/hero-name'
-import TiltCard from '@/components/hero/tilt-card'
+import Portrait from '@/components/hero/portrait'
 import Magnetic from '@/components/motion/magnetic'
 import SocialIcons from '@/components/social-icons'
 import ViewProjectsButton from '@/components/view-projects-button'
 import { profile } from '@/content/profile'
-
-function ProfileCard() {
-  return (
-    <TiltCard className="mx-auto w-full max-w-[22rem]">
-      {/* Solid backdrop (not glass): the cut-out photo is cropped at the shoulders, so it fills the card edge to edge. */}
-      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-border/80 bg-surface-2 shadow-[0_30px_80px_-20px_color-mix(in_oklch,var(--primary)_55%,transparent)]">
-        <div className="absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_30%,color-mix(in_oklch,var(--primary)_45%,transparent),transparent_70%),linear-gradient(180deg,var(--surface-3),var(--surface-1))]" />
-        <div className="dot-grid absolute inset-0 opacity-60" />
-        <Image
-          src={profile.photo}
-          alt={profile.fullName}
-          fill
-          priority
-          sizes="(min-width: 768px) 352px, 90vw"
-          className="object-cover object-[50%_12%]"
-        />
-        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-surface-1 via-surface-1/70 to-transparent" />
-      </div>
-      <figure className="absolute inset-x-4 bottom-4 rounded-xl border border-border/70 bg-surface-1/90 px-4 py-3 shadow-xl [transform:translateZ(48px)]">
-        <blockquote className="text-center text-sm text-muted-foreground">&ldquo;{profile.quote}&rdquo;</blockquote>
-      </figure>
-      <div className="absolute -right-3 top-6 rounded-full border border-accent/40 bg-surface-1/90 px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-accent shadow-lg [transform:translateZ(70px)]">
-        <span className="mr-1.5 inline-block size-1.5 animate-pulse rounded-full bg-accent align-middle" aria-hidden="true" />
-        Open to internships
-      </div>
-    </TiltCard>
-  )
-}
 
 export default function Hero() {
   return (
@@ -77,7 +48,7 @@ export default function Hero() {
         </div>
 
         <HeroFade delay={0.35} variant="scale">
-          <ProfileCard />
+          <Portrait />
         </HeroFade>
       </div>
 

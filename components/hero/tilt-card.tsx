@@ -11,12 +11,14 @@ const spring = { stiffness: 180, damping: 18, mass: 0.6 }
  * 3D tilt that follows the pointer, with a specular glare. Children can use
  * `[transform:translateZ(..)]` to float above the card surface.
  */
-export default function TiltCard({ children, className }: { children: ReactNode; className?: string }) {
+type TiltCardProps = { children: ReactNode; className?: string; glare?: boolean; max?: number }
+
+export default function TiltCard({ children, className, glare: withGlare = true, max = 10 }: TiltCardProps) {
   const enabled = usePointerEffects()
   const px = useMotionValue(0.5)
   const py = useMotionValue(0.5)
-  const rotateX = useSpring(useTransform(py, [0, 1], [9, -9]), spring)
-  const rotateY = useSpring(useTransform(px, [0, 1], [-11, 11]), spring)
+  const rotateX = useSpring(useTransform(py, [0, 1], [max * 0.8, -max * 0.8]), spring)
+  const rotateY = useSpring(useTransform(px, [0, 1], [-max, max]), spring)
   const glareX = useTransform(px, [0, 1], [0, 100])
   const glareY = useTransform(py, [0, 1], [0, 100])
   const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgb(255 255 255 / 0.2), transparent 55%)`
@@ -42,11 +44,13 @@ export default function TiltCard({ children, className }: { children: ReactNode;
         className="relative rounded-2xl [transform-style:preserve-3d]"
       >
         {children}
-        <motion.div
-          aria-hidden="true"
-          style={{ background: glare, opacity: glareOpacity }}
-          className="pointer-events-none absolute inset-0 rounded-2xl mix-blend-overlay"
-        />
+        {withGlare && (
+          <motion.div
+            aria-hidden="true"
+            style={{ background: glare, opacity: glareOpacity }}
+            className="pointer-events-none absolute inset-0 rounded-2xl mix-blend-overlay"
+          />
+        )}
       </motion.div>
     </div>
   )

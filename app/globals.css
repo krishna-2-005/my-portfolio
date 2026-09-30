@@ -106,6 +106,7 @@
 
   --animate-float: float 6s var(--ease-in-out-quart) infinite;
   --animate-gradient-pan: gradient-pan 8s linear infinite;
+  --animate-spin-slow: spin 24s linear infinite;
 }
 
 @layer base {
