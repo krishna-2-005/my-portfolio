@@ -43,7 +43,7 @@ export const projects: Project[] = [
       'Full-stack hackathon evaluation platform on Next.js (App Router) and a Supabase-hosted PostgreSQL backend. Admins configure events, rounds and rubrics, import teams by CSV and assign judges; judges fill dynamic rubric-bound scorecards with draft/submit states and post-submission score locking; per-round and overall leaderboards come with Recharts visualizations, CSV export, and printable PDF reports.',
     highlight: 'Admin and Judge authorization enforced in the database with PostgreSQL row-level security',
     github: 'https://github.com/krishna-2-005/Hack-Score',
-    live: 'https://hack-score.vercel.app',
+    live: 'https://nmims-hack-score.vercel.app/login',
   },
   {
     slug: 'nmims-events',
