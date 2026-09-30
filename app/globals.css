@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
 
 /* Wide and tall enough for the pinned project deck (see components/projects/project-deck.tsx). */
 @custom-variant deck (@media (min-width: 768px) and (min-height: 760px));

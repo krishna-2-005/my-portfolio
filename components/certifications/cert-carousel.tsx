@@ -19,12 +19,14 @@ function applyCoverflow(api: EmblaApi, still: boolean) {
     const inner = slide.firstElementChild as HTMLElement | null
     if (!inner) return
     const diff = Math.max(-1, Math.min(1, (snaps[i] - progress) * factor))
+    // Dim with brightness, not opacity: opacity also drops the text's measured contrast.
+    const dim = `brightness(${1 - Math.abs(diff) * 0.5})`
     if (still) {
-      inner.style.opacity = diff === 0 ? '1' : '0.55'
+      inner.style.filter = diff === 0 ? 'none' : 'brightness(0.55)'
       return
     }
     inner.style.transform = `perspective(1200px) rotateY(${diff * -38}deg) scale(${1 - Math.abs(diff) * 0.16})`
-    inner.style.opacity = String(1 - Math.abs(diff) * 0.45)
+    inner.style.filter = dim
   })
 }
 
@@ -173,6 +175,18 @@ export default function CertCarousel({ certifications }: { certifications: Certi
                     : 'border-border',
                 )}
               >
+                {!cert.image && (
+                  <div
+                    aria-hidden="true"
+                    className="relative grid aspect-[4/3] w-full place-items-center overflow-hidden bg-[radial-gradient(70%_70%_at_50%_30%,color-mix(in_oklch,var(--primary)_35%,transparent),transparent_70%),linear-gradient(180deg,var(--surface-3),var(--surface-1))]"
+                  >
+                    <div className="dot-grid absolute inset-0 opacity-60" />
+                    <div className="relative text-center">
+                      <p className="font-display text-3xl font-semibold tracking-tight">{cert.issuer}</p>
+                      <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.25em] text-accent">Verified on Credly</p>
+                    </div>
+                  </div>
+                )}
                 {cert.image && (
                   <button
                     type="button"

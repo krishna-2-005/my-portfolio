@@ -37,14 +37,6 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image', title: siteTitle, description: siteDescription },
   robots: { index: true, follow: true },
-  icons: {
-    icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
-    ],
-    apple: '/apple-icon.png',
-  },
 }
 
 export const viewport: Viewport = {
