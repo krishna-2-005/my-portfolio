@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <radialGradient id="a" cx="72%" cy="32%" r="60%"><stop offset="0" stop-color="#60a5fa" stop-opacity="0.55"/><stop offset="1" stop-color="#60a5fa" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b" cx="15%" cy="90%" r="65%"><stop offset="0" stop-color="#6d3fd6" stop-opacity="0.7"/><stop offset="1" stop-color="#6d3fd6" stop-opacity="0"/></radialGradient>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0v40" fill="none" stroke="#fff" stroke-opacity="0.06"/></pattern>
+    <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0"/></filter>
+  </defs>
+  <rect width="1200" height="800" fill="#0a0b16"/>
+  <rect width="1200" height="800" fill="url(#b)"/>
+  <rect width="1200" height="800" fill="url(#a)"/>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <g>
+    <path d="M470 210h220l80 80v320h-300z" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M690 210v80h80" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M510 320h210" stroke="#ffffff" stroke-opacity="0.5" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M510 370h150" stroke="#ffffff" stroke-opacity="0.5" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M510 420h210" stroke="#ffffff" stroke-opacity="0.5" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M510 470h150" stroke="#ffffff" stroke-opacity="0.5" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M510 520h210" stroke="#ffffff" stroke-opacity="0.5" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="790" cy="560" r="56" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" fill="#0a0b16" fill-opacity="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="m765 560 18 18 34-36" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <rect width="1200" height="800" filter="url(#n)"/>
+</svg>

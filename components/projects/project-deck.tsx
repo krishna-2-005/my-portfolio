@@ -1,18 +1,27 @@
 'use client'
 
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import Image from 'next/image'
-import { useRef } from 'react'
-import type { Project, ProjectStatus } from '@/content/types'
+import { useRef, useState, type KeyboardEvent } from 'react'
+import { useScrollToSection } from '@/components/providers/smooth-scroll'
+import type { Project, ProjectCategory, ProjectStatus } from '@/content/types'
+import { ease } from '@/lib/motion'
 import { REDUCED_MOTION, useMediaQuery } from '@/lib/use-media-query'
 import { cn } from '@/lib/utils'
 
 const statusStyles: Record<ProjectStatus, string> = {
   Deployed: 'border-success/40 bg-success/10 text-success',
+  'Live Demo': 'border-sky-400/40 bg-sky-400/10 text-sky-300',
   Awarded: 'border-warning/40 bg-warning/10 text-warning',
   'In Development': 'border-accent/40 bg-accent/10 text-accent',
   Prototype: 'border-primary/40 bg-primary/10 text-primary',
 }
+
+/** Keep in sync with the `deck` custom variant in globals.css. */
+const DECK_QUERY = '(min-width: 768px) and (min-height: 760px)'
+
+const GITHUB_PATH =
+  'M12 0a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 0Z'
 
 type CardProps = {
   project: Project
@@ -30,7 +39,7 @@ function DeckCard({ project, index, total, progress, animate }: CardProps) {
   const dim = useTransform(progress, [index / total, 1], [0, depth * 0.07])
 
   return (
-    <div className="pb-5 md:sticky md:top-0 md:flex md:h-svh md:items-center md:pb-0">
+    <div className="pb-5 deck:sticky deck:top-0 deck:flex deck:h-svh deck:items-center deck:pb-0 deck:pt-16">
       <motion.div
         style={animate ? { scale, top: index * 18 } : undefined}
         className={cn('relative w-full origin-top rounded-3xl', featured && 'glow-ring')}
@@ -52,17 +61,27 @@ function DeckCard({ project, index, total, progress, animate }: CardProps) {
               )}
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-sm">
+            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
               <span className={cn('rounded-full border px-2.5 py-0.5 font-medium', statusStyles[project.status])}>
                 {project.location ? `${project.status} – ${project.location}` : project.status}
               </span>
               <span className="tabular-nums text-muted-foreground">{project.period}</span>
+              {project.team && <span className="text-muted-foreground">· {project.team}</span>}
             </div>
 
             <h3 className="mt-4 text-[clamp(1.6rem,1.2rem+1.4vw,2.4rem)] font-semibold leading-[1.1] tracking-tight">
               {project.title}
             </h3>
             <p className="mt-4 leading-relaxed text-muted-foreground">{project.description}</p>
+
+            {project.highlight && (
+              <p className="mt-5 flex gap-3 rounded-xl border border-accent/25 bg-accent/5 px-4 py-3 text-sm text-foreground/90">
+                <svg viewBox="0 0 24 24" className="mt-0.5 size-4 shrink-0 text-accent" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                  <path d="M3 17l6-6 4 4 8-8M14 7h7v7" />
+                </svg>
+                {project.highlight}
+              </p>
+            )}
 
             <ul className="mt-6 flex flex-wrap gap-2" aria-label="Tech stack">
               {project.tech.map((tech) => (
@@ -75,19 +94,38 @@ function DeckCard({ project, index, total, progress, animate }: CardProps) {
               ))}
             </ul>
 
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-flex w-fit items-center gap-2 rounded-full border border-border bg-surface-2 px-5 py-2.5 text-sm font-semibold transition-colors duration-(--dur-fast) hover:border-foreground hover:bg-foreground hover:text-background md:mt-auto"
-              >
-                <svg viewBox="0 0 24 24" className="size-4" fill="currentColor" aria-hidden="true">
-                  <path d="M12 0a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 0Z" />
-                </svg>
-                View on GitHub
-                <span className="sr-only"> – {project.title} (opens in a new tab)</span>
-              </a>
+            {(project.github || project.live) && (
+              <div className="mt-8 flex flex-wrap gap-3 md:mt-auto md:pt-8">
+                {project.live && (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-[filter] duration-(--dur-fast) hover:brightness-110"
+                  >
+                    <span className="relative flex size-2" aria-hidden="true">
+                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-foreground/60" />
+                      <span className="relative inline-flex size-2 rounded-full bg-accent-foreground" />
+                    </span>
+                    Live demo
+                    <span className="sr-only"> – {project.title} (opens in a new tab)</span>
+                  </a>
+                )}
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-surface-2 px-5 py-2.5 text-sm font-semibold transition-colors duration-(--dur-fast) hover:border-foreground hover:bg-foreground hover:text-background"
+                  >
+                    <svg viewBox="0 0 24 24" className="size-4" fill="currentColor" aria-hidden="true">
+                      <path d={GITHUB_PATH} />
+                    </svg>
+                    View on GitHub
+                    <span className="sr-only"> – {project.title} (opens in a new tab)</span>
+                  </a>
+                )}
+              </div>
             )}
           </div>
 
@@ -115,10 +153,11 @@ function DeckCard({ project, index, total, progress, animate }: CardProps) {
 }
 
 /** Sticky stacked deck on md+: each card pins, and those beneath scale back as the next lands. */
-export default function ProjectDeck({ projects }: { projects: Project[] }) {
+function Deck({ projects }: { projects: Project[] }) {
   const container = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: container, offset: ['start start', 'end end'] })
-  const desktop = useMediaQuery('(min-width: 768px)')
+  // Pinned stacking needs room: a card taller than the viewport would be cut off.
+  const roomy = useMediaQuery(DECK_QUERY)
   const reduced = useMediaQuery(REDUCED_MOTION)
 
   return (
@@ -130,9 +169,98 @@ export default function ProjectDeck({ projects }: { projects: Project[] }) {
           index={i}
           total={projects.length}
           progress={scrollYProgress}
-          animate={desktop && !reduced}
+          animate={roomy && !reduced}
         />
       ))}
+    </div>
+  )
+}
+
+type Category = { id: ProjectCategory; label: string }
+
+export default function ProjectShowcase({ projects, categories }: { projects: Project[]; categories: Category[] }) {
+  const [active, setActive] = useState<ProjectCategory>(categories[0].id)
+  const scrollToSection = useScrollToSection()
+  const tabs = useRef<(HTMLButtonElement | null)[]>([])
+  const visible = projects.filter((p) => p.category === active)
+
+  const select = (id: ProjectCategory) => {
+    if (id === active) return
+    setActive(id)
+    // Decks differ in length — start the new one from its first card.
+    scrollToSection('projects')
+  }
+
+  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
+    e.preventDefault()
+    const i = categories.findIndex((c) => c.id === active)
+    const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + categories.length) % categories.length
+    select(categories[next].id)
+    tabs.current[next]?.focus()
+  }
+
+  return (
+    <div>
+      <div className="relative z-20 mb-8 flex justify-center deck:sticky deck:top-20 deck:mb-0">
+        <div
+          role="tablist"
+          aria-label="Project categories"
+          onKeyDown={onKey}
+          className="inline-flex gap-1 rounded-full border border-border bg-surface-1/90 p-1.5 shadow-[0_20px_40px_-20px_rgb(0_0_0/0.9)] backdrop-blur-md"
+        >
+          {categories.map((c, i) => {
+            const selected = c.id === active
+            const count = projects.filter((p) => p.category === c.id).length
+            return (
+              <button
+                key={c.id}
+                ref={(el) => {
+                  tabs.current[i] = el
+                }}
+                role="tab"
+                id={`tab-${c.id}`}
+                aria-selected={selected}
+                aria-controls="project-panel"
+                tabIndex={selected ? 0 : -1}
+                onClick={() => select(c.id)}
+                className={cn(
+                  'relative rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-(--dur-base)',
+                  selected ? 'text-accent-foreground' : 'text-muted-foreground hover:text-foreground',
+                )}
+              >
+                {selected && (
+                  <motion.span
+                    layoutId="project-tab"
+                    className="absolute inset-0 rounded-full bg-accent"
+                    transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative">
+                  {c.label}
+                  <span className={cn('ml-2 font-mono text-xs tabular-nums', selected ? 'opacity-70' : 'opacity-60')}>
+                    {count}
+                  </span>
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div id="project-panel" role="tabpanel" aria-labelledby={`tab-${active}`}>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.45, ease: ease.outExpo }}
+          >
+            <Deck projects={visible} />
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   )
 }

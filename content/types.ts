@@ -21,11 +21,14 @@ export type SkillCategory = {
   skills: string[]
 }
 
-export type ProjectStatus = 'Deployed' | 'Awarded' | 'In Development' | 'Prototype'
+export type ProjectStatus = 'Deployed' | 'Live Demo' | 'Awarded' | 'In Development' | 'Prototype'
+
+export type ProjectCategory = 'fullstack' | 'aiml'
 
 export type Project = {
   slug: string
   title: string
+  category: ProjectCategory
   status: ProjectStatus
   /** Shown after the status, e.g. "Vijayawada" in "Deployed – Vijayawada". */
   location?: string
@@ -34,6 +37,12 @@ export type Project = {
   description: string
   /** Omitted when there is no public repository. */
   github?: string
+  /** Public, working demo of the project. */
+  live?: string
+  /** Team context, e.g. "Team of 6" or "My role: AI Agents & Automation". */
+  team?: string
+  /** One-line headline result, shown as a highlight. */
+  highlight?: string
 }
 
 export type Achievement = {
