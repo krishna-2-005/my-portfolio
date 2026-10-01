@@ -16,15 +16,14 @@ export default function OpengraphImage() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: 72,
-          color: '#f3f2fb',
-          backgroundColor: '#060810',
-          backgroundImage:
-            'radial-gradient(circle at 82% 30%, rgba(164,128,255,0.55), transparent 45%), radial-gradient(circle at 92% 85%, rgba(39,231,249,0.28), transparent 40%), radial-gradient(circle at 5% 100%, rgba(79,37,158,0.6), transparent 45%)',
+          color: '#e8e9ec',
+          backgroundColor: '#0d0e11',
+          backgroundImage: 'radial-gradient(circle at 85% 20%, rgba(145,132,248,0.22), transparent 50%)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', fontSize: 36, fontWeight: 700, letterSpacing: -1 }}>
           {profile.initials}
-          <span style={{ color: '#27e7f9' }}>.</span>
+          <span style={{ color: '#9184f8' }}>.</span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div
@@ -33,19 +32,17 @@ export default function OpengraphImage() {
               fontWeight: 700,
               letterSpacing: -4,
               lineHeight: 1,
-              backgroundImage: 'linear-gradient(90deg, #a480ff, #27e7f9)',
-              backgroundClip: 'text',
-              color: 'transparent',
+              color: '#e8e9ec',
             }}
           >
             {profile.firstName}
           </div>
           <div style={{ fontSize: 92, fontWeight: 700, letterSpacing: -4, lineHeight: 1.05 }}>{profile.lastName}</div>
-          <div style={{ marginTop: 28, fontSize: 30, color: '#b9b7cc' }}>{profile.headline}</div>
+          <div style={{ marginTop: 28, fontSize: 30, color: '#a7acb6' }}>{profile.headline}</div>
         </div>
-        <div style={{ display: 'flex', gap: 16, fontSize: 22, color: '#27e7f9' }}>
+        <div style={{ display: 'flex', gap: 16, fontSize: 22, color: '#9184f8' }}>
           <span>Deployed in production</span>
-          <span style={{ color: '#4a4960' }}>•</span>
+          <span style={{ color: '#3b3f49' }}>•</span>
           <span>Seeking internships</span>
         </div>
       </div>

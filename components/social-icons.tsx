@@ -29,17 +29,17 @@ const paths: Record<SocialLink['label'], React.ReactNode> = {
 
 export default function SocialIcons({ className }: { className?: string }) {
   return (
-    <ul className={cn('flex gap-2', className)}>
+    <ul className={cn('flex gap-1', className)}>
       {socials.map((social) => {
         const external = social.href.startsWith('http')
         return (
           <li key={social.label}>
             <a
               href={social.href}
-              aria-label={social.label}
+              aria-label={external ? `${social.label} (opens in a new tab)` : social.label}
               target={external ? '_blank' : undefined}
               rel={external ? 'noopener noreferrer' : undefined}
-              className="grid size-11 place-items-center rounded-full text-muted-foreground transition-colors duration-(--dur-fast) hover:bg-surface-3 hover:text-foreground"
+              className="grid size-10 place-items-center rounded-ui text-muted-foreground transition-colors duration-(--dur) hover:bg-surface-hover hover:text-foreground"
             >
               <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true">
                 {paths[social.label]}

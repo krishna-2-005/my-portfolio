@@ -17,7 +17,7 @@ function mailtoFor(values: FormValues) {
 }
 
 const fieldClass =
-  'w-full rounded-lg border border-input bg-surface-1 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 transition-[border-color,box-shadow] duration-(--dur-fast) focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 aria-[invalid=true]:border-destructive'
+  'block h-11 w-full rounded-ui border border-border bg-background px-3.5 text-body text-foreground placeholder:text-subtle-foreground transition-colors duration-(--dur) focus:border-accent focus:outline-none aria-[invalid=true]:border-destructive'
 
 export default function ContactForm() {
   const [sent, setSent] = useState(false)
@@ -63,7 +63,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="glass rounded-2xl p-5 md:p-6">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full max-w-[480px] rounded-ui border border-border bg-surface p-5">
       <div className="space-y-3">
         {/* Honeypot: off-screen and out of the tab order; bots fill it in, people never see it. */}
         <div aria-hidden="true" className="absolute -left-[9999px] size-px overflow-hidden">
@@ -85,7 +85,7 @@ export default function ContactForm() {
             {...register('name')}
           />
           {errors.name && (
-            <p id="contact-name-error" className="mt-1.5 text-xs text-destructive">
+            <p id="contact-name-error" className="mt-1 text-small text-destructive">
               {errors.name.message}
             </p>
           )}
@@ -105,7 +105,7 @@ export default function ContactForm() {
             {...register('email')}
           />
           {errors.email && (
-            <p id="contact-email-error" className="mt-1.5 text-xs text-destructive">
+            <p id="contact-email-error" className="mt-1 text-small text-destructive">
               {errors.email.message}
             </p>
           )}
@@ -120,25 +120,25 @@ export default function ContactForm() {
             placeholder="Your Message"
             aria-invalid={!!errors.message}
             aria-describedby={errors.message ? 'contact-message-error' : undefined}
-            className={cn(fieldClass, 'min-h-36 resize-y')}
+            className={cn(fieldClass, 'h-auto min-h-28 resize-y py-2.5')}
             {...register('message')}
           />
           {errors.message && (
-            <p id="contact-message-error" className="mt-1.5 text-xs text-destructive">
+            <p id="contact-message-error" className="mt-1 text-small text-destructive">
               {errors.message.message}
             </p>
           )}
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <ul className="flex flex-wrap gap-2" aria-label="Quick messages">
+      <div className="mt-3 flex flex-col gap-3">
+        <ul className="flex flex-wrap gap-1.5" aria-label="Quick messages">
           {contactCopy.presetMessages.map((text) => (
             <li key={text}>
               <button
                 type="button"
                 onClick={() => setValue('message', text, { shouldValidate: true })}
-                className="rounded-lg border border-border bg-surface-2 px-2.5 py-1.5 text-xs text-muted-foreground transition-colors duration-(--dur-fast) hover:border-primary/50 hover:text-foreground"
+                className="chip tap text-muted-foreground transition-colors duration-(--dur) hover:border-border-strong hover:text-foreground"
               >
                 {text}
               </button>
@@ -148,10 +148,10 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex h-11 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-semibold text-accent-foreground transition-[filter,transform] duration-(--dur-fast) hover:brightness-110 active:translate-y-px disabled:opacity-60"
+          className="btn btn-primary self-start"
         >
           {isSubmitting ? 'Sending…' : 'Send message'}
-          <svg viewBox="0 0 512 512" className="size-4" aria-hidden="true">
+          <svg viewBox="0 0 512 512" className="size-3.5" aria-hidden="true">
             <path
               fill="currentColor"
               d="M473 39.05a24 24 0 0 0-25.5-5.46L47.47 185h-.08a24 24 0 0 0 1 45.16l.41.13l137.3 58.63a16 16 0 0 0 15.54-3.59L422 80a7.07 7.07 0 0 1 10 10L226.66 310.26a16 16 0 0 0-3.59 15.54l58.65 137.38c.06.2.12.38.19.57c3.2 9.27 11.3 15.81 21.09 16.25h1a24.63 24.63 0 0 0 23-15.46L478.39 64.62A24 24 0 0 0 473 39.05"
@@ -160,7 +160,7 @@ export default function ContactForm() {
         </button>
       </div>
 
-      <p role="status" className="mt-3 min-h-5 text-sm text-success">
+      <p role="status" className="mt-3 min-h-5 text-small text-success">
         {sent ? contactCopy.successMessage : ''}
       </p>
     </form>

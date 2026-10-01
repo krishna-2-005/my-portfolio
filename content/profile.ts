@@ -6,6 +6,10 @@ export const profile = {
   fullName: 'Kuchuru Sai Krishna Reddy',
   initials: 'KSK',
   headline: 'B.Tech CSE (Data Science) | Full-Stack & Machine Learning Developer',
+  /** Hero degree line and specialisations — split from the headline and the About copy. */
+  degree: 'B.Tech CSE (Data Science) · NMIMS Hyderabad',
+  focus: ['Full-Stack Development', 'Machine Learning', 'Data Analytics'],
+  status: 'Seeking internship opportunities',
   tagline: 'Building real-world, data-driven and full-stack systems deployed in production environments.',
   quote: 'Sometimes You Win, Sometimes You Learn',
   photo: '/profile-cutout.webp',
@@ -13,6 +17,14 @@ export const profile = {
   email: 'kuchurusaikrishnareddy@gmail.com',
   credly: 'https://www.credly.com/users/sai-krishna-reddy-kuchuru',
 } as const
+
+/** About paragraphs, verbatim. `**…**` marks an emphasised phrase. */
+export const about: string[] = [
+  'I am a Computer Science (Data Science) undergraduate at NMIMS Hyderabad, passionate about building practical, real-world software solutions that solve meaningful problems.',
+  'What sets me apart is my experience in designing, developing, and deploying systems used by real users. I have successfully deployed a **Diagnostics Center Management System in Vijayawada** and an **ICA Tracker system** used within my college, giving me hands-on exposure to real operational environments beyond academic projects.',
+  'My interests span **full-stack development**, **data analytics**, and **machine learning**, and I enjoy working at the intersection of technology and impact. I actively participate in hackathons, technical events, and leadership roles, constantly striving to improve both my technical and collaborative skills.',
+  'I am currently seeking **internship opportunities** where I can contribute to real products, learn from industry professionals, and grow as a software engineer and data scientist.',
+]
 
 export const socials: SocialLink[] = [
   { label: 'GitHub', href: 'https://github.com/krishna-2-005' },

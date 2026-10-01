@@ -1,211 +1,194 @@
 'use client'
 
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { useEffect, useRef, useState, type MouseEvent } from 'react'
-import { useLenis, useScrollToSection } from '@/components/providers/smooth-scroll'
+import { useEffect, useRef, useState } from 'react'
+import ExternalLink from '@/components/external-link'
 import { navItems, profile, type SectionId } from '@/content/profile'
-import { duration, ease } from '@/lib/motion'
 import { cn } from '@/lib/utils'
+
+/** Sections tucked under "More" on desktop (all of them stay in the mobile menu). */
+const MORE: SectionId[] = ['achievements', 'leadership', 'certifications']
+const primary = navItems.filter((i) => i.id !== 'home' && !MORE.includes(i.id))
+const more = navItems.filter((i) => MORE.includes(i.id))
+// Contact goes last, after the "More" menu.
+const beforeMore = primary.filter((i) => i.id !== 'contact')
+const contact = primary.find((i) => i.id === 'contact')
 
 function useActiveSection(): SectionId {
   const [active, setActive] = useState<SectionId>('home')
+  useEffect(() => {
+    const els = navItems.map((i) => document.getElementById(i.id)).filter((el): el is HTMLElement => el !== null)
+    // Whichever section crosses a thin band below the header is "current".
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id as SectionId)
+      },
+      { rootMargin: '-25% 0px -70% 0px' },
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+  return active
+}
+
+const linkClass = (isActive: boolean) =>
+  cn(
+    'inline-flex h-9 items-center rounded-ui px-2.5 text-small font-medium transition-colors duration-(--dur)',
+    isActive ? 'text-accent' : 'text-muted-foreground hover:text-foreground',
+  )
+
+function MoreMenu({ active }: { active: SectionId }) {
+  const [open, setOpen] = useState(false)
+  const wrap = useRef<HTMLDivElement>(null)
+  const containsActive = MORE.includes(active)
 
   useEffect(() => {
-    const elements = navItems
-      .map((item) => document.getElementById(item.id))
-      .filter((el): el is HTMLElement => el !== null)
+    if (!open) return
+    const onDown = (e: PointerEvent) => !wrap.current?.contains(e.target as Node) && setOpen(false)
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('pointerdown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
 
-    // A thin band across the middle of the viewport: whichever section crosses it is "current".
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id as SectionId)
-        }
-      },
-      { rootMargin: '-45% 0px -54% 0px' },
-    )
-    elements.forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
-
-  return active
+  return (
+    <div ref={wrap} className="relative">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls="nav-more"
+        onClick={() => setOpen((v) => !v)}
+        className={cn(linkClass(containsActive), 'gap-1')}
+      >
+        More
+        <svg viewBox="0 0 12 12" className={cn('size-3 transition-transform duration-(--dur)', open && 'rotate-180')} aria-hidden="true">
+          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </button>
+      {open && (
+        <ul id="nav-more" className="absolute right-0 top-full mt-2 w-48 rounded-ui border border-border bg-surface p-1">
+          {more.map((item) => (
+            <li key={item.id}>
+              <a
+                href={`#${item.id}`}
+                onClick={() => setOpen(false)}
+                aria-current={active === item.id ? 'location' : undefined}
+                className={cn(
+                  'flex h-9 items-center rounded-ui px-3 text-small font-medium transition-colors duration-(--dur) hover:bg-surface-hover',
+                  active === item.id ? 'text-accent' : 'text-muted-foreground hover:text-foreground',
+                )}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
 }
 
 export default function Navigation() {
   const active = useActiveSection()
-  const lenis = useLenis()
-  const scrollToSection = useScrollToSection()
   const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [hidden, setHidden] = useState(false)
   const toggleRef = useRef<HTMLButtonElement>(null)
-  const menuRef = useRef<HTMLDivElement>(null)
 
-  const { scrollY } = useScroll()
-  useMotionValueEvent(scrollY, 'change', (y) => {
-    const prev = scrollY.getPrevious() ?? 0
-    setScrolled(y > 24)
-    setHidden(y > 400 && y > prev + 2)
-    if (y < prev - 2) setHidden(false)
-  })
+  // Close the menu first (which releases the scroll lock), then jump to the section.
+  const goFromMenu = (id: SectionId) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    setOpen(false)
+    setTimeout(() => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      document.getElementById(id)?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
+      history.replaceState(null, '', `#${id}`)
+    }, 0)
+  }
 
   useEffect(() => {
     if (!open) return
     const toggle = toggleRef.current
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
-    const prevOverflow = document.body.style.overflow
+    const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    lenis?.stop()
     window.addEventListener('keydown', onKey)
-    menuRef.current?.querySelector('a')?.focus({ preventScroll: true })
     return () => {
-      document.body.style.overflow = prevOverflow
-      lenis?.start()
+      document.body.style.overflow = prev
       window.removeEventListener('keydown', onKey)
       toggle?.focus({ preventScroll: true })
     }
-  }, [open, lenis])
-
-  const go = (id: SectionId) => (e: MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    setOpen(false)
-    scrollToSection(id)
-  }
+  }, [open])
 
   return (
-    <>
-      <motion.header
-        initial={false}
-        animate={{ y: hidden && !open ? '-100%' : '0%' }}
-        transition={{ duration: duration.base, ease: ease.outExpo }}
-        className={cn(
-          'fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-(--dur-base)',
-          scrolled || open ? 'border-border/70 bg-background/70 backdrop-blur-xl' : 'border-transparent',
-        )}
-      >
-        <nav aria-label="Primary" className="container-page flex h-16 items-center justify-between">
-          <a
-            href="#home"
-            onClick={go('home')}
-            className="group font-display text-lg font-semibold tracking-tight"
-            aria-label={`${profile.fullName} – home`}
-          >
-            {profile.initials}
-            <span className="inline-block text-accent transition-transform duration-(--dur-base) ease-out-expo group-hover:scale-150">
-              .
-            </span>
-          </a>
+    <header className="sticky top-0 z-50 h-(--header-h) border-b border-border bg-background/85 backdrop-blur-md">
+      <nav aria-label="Primary" className="container-page flex h-full items-center justify-between gap-4">
+        <a href="#home" className="inline-flex h-10 items-center text-body font-semibold tracking-tight text-foreground">
+          {profile.fullName}
+        </a>
 
-          <ul className="hidden items-center gap-0.5 rounded-full border border-border/60 bg-surface-1/60 p-1 backdrop-blur-md lg:flex">
-            {navItems.filter((item) => item.id !== 'home').map((item) => {
-              const isActive = active === item.id
-              return (
-                <li key={item.id} className="relative">
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-surface-4"
-                      transition={{ type: 'spring', stiffness: 420, damping: 36 }}
-                    />
-                  )}
-                  <a
-                    href={`#${item.id}`}
-                    onClick={go(item.id)}
-                    aria-current={isActive ? 'location' : undefined}
-                    className={cn(
-                      'relative block rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors duration-(--dur-fast)',
-                      isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
-                    )}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              )
-            })}
+        <div className="hidden items-center gap-0.5 lg:flex">
+          <ul className="flex items-center gap-0.5">
+            {beforeMore.map((item) => (
+              <li key={item.id}>
+                <a href={`#${item.id}`} aria-current={active === item.id ? 'location' : undefined} className={linkClass(active === item.id)}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
           </ul>
+          <MoreMenu active={active} />
+          {contact && (
+            <a href="#contact" aria-current={active === 'contact' ? 'location' : undefined} className={linkClass(active === 'contact')}>
+              {contact.label}
+            </a>
+          )}
+          <ExternalLink href={profile.resumeUrl} className="btn btn-secondary ml-2">
+            Resume
+          </ExternalLink>
+        </div>
 
-          <a
-            href="#contact"
-            onClick={go('contact')}
-            className="hidden h-9 items-center rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground transition-[filter] duration-(--dur-fast) hover:brightness-110 xl:inline-flex"
-          >
-            Let&apos;s talk
-          </a>
+        <button
+          ref={toggleRef}
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          className="btn btn-secondary px-3 lg:hidden"
+        >
+          {open ? 'Close' : 'Menu'}
+        </button>
+      </nav>
 
-          <button
-            ref={toggleRef}
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            className="relative grid size-11 place-items-center rounded-full lg:hidden"
-          >
-            <span
-              className={cn(
-                'absolute h-0.5 w-5 rounded bg-foreground transition-transform duration-(--dur-base) ease-out-expo',
-                open ? 'rotate-45' : '-translate-y-1',
-              )}
-            />
-            <span
-              className={cn(
-                'absolute h-0.5 w-5 rounded bg-foreground transition-transform duration-(--dur-base) ease-out-expo',
-                open ? '-rotate-45' : 'translate-y-1',
-              )}
-            />
-          </button>
-        </nav>
-      </motion.header>
-
-      {/* Outside the header: its transform + backdrop-filter would trap a fixed child. */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            ref={menuRef}
-            id="mobile-menu"
-            data-lenis-prevent=""
-            initial={{ clipPath: 'inset(0 0 100% 0)' }}
-            animate={{ clipPath: 'inset(0 0 0% 0)' }}
-            exit={{ clipPath: 'inset(0 0 100% 0)' }}
-            transition={{ duration: 0.55, ease: ease.inOutQuart }}
-            className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-background lg:hidden"
-          >
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_40%_at_100%_100%,color-mix(in_oklch,var(--primary)_22%,transparent),transparent)]" />
-            <motion.ul
-              className="container-page relative flex flex-col py-6"
-              initial="hidden"
-              animate="show"
-              exit="hidden"
-              variants={{
-                hidden: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
-                show: { transition: { staggerChildren: 0.05, delayChildren: 0.18 } },
-              }}
-            >
-              {navItems.map((item, i) => (
-                <li key={item.id} className="overflow-hidden border-b border-border/50">
-                  <motion.a
-                    href={`#${item.id}`}
-                    onClick={go(item.id)}
-                    aria-current={active === item.id ? 'location' : undefined}
-                    variants={{
-                      hidden: { y: '100%', opacity: 0 },
-                      show: { y: '0%', opacity: 1, transition: { duration: 0.6, ease: ease.outExpo } },
-                    }}
-                    className={cn(
-                      'flex items-baseline gap-4 py-4 font-display text-4xl font-semibold tracking-tight',
-                      active === item.id ? 'text-foreground' : 'text-muted-foreground',
-                    )}
-                  >
-                    <span className="font-mono text-xs tabular-nums text-accent">{String(i).padStart(2, '0')}</span>
-                    {item.label}
-                    {active === item.id && <span className="ml-auto size-2 self-center rounded-full bg-accent" />}
-                  </motion.a>
-                </li>
-              ))}
-            </motion.ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+      {open && (
+        <div
+          id="mobile-menu"
+          className="fixed inset-x-0 bottom-0 top-(--header-h) overflow-y-auto border-t border-border bg-background lg:hidden"
+        >
+          <ul className="container-page py-3">
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <a
+                  href={`#${item.id}`}
+                  onClick={goFromMenu(item.id)}
+                  aria-current={active === item.id ? 'location' : undefined}
+                  className={cn(
+                    'flex h-11 items-center border-b border-border text-body font-medium',
+                    active === item.id ? 'text-accent' : 'text-foreground',
+                  )}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+            <li className="pt-4">
+              <ExternalLink href={profile.resumeUrl} className="btn btn-secondary">
+                Download Resume
+              </ExternalLink>
+            </li>
+          </ul>
+        </div>
+      )}
+    </header>
   )
 }

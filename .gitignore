@@ -38,3 +38,7 @@ _archive/
 
 # CVs — personal documents, kept local
 /*.pdf
+
+# redesign audit screenshots (local only)
+/redesign-audit/before/
+/redesign-audit/after/

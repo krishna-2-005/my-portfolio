@@ -1,23 +1,16 @@
 import type { Metadata, Viewport } from 'next'
-import { Bricolage_Grotesque, Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import Background from '@/components/motion/background'
-import Cursor from '@/components/motion/cursor'
-import Preloader from '@/components/motion/preloader'
-import ScrollProgress from '@/components/motion/scroll-progress'
-import Providers from '@/components/providers'
 import { Toaster } from 'sonner'
-import { introScript } from '@/lib/intro'
+import RevealObserver from '@/components/reveal-observer'
 import { siteDescription, siteTitle, siteUrl } from '@/lib/site'
 import './globals.css'
 
 const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' })
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  variable: '--font-bricolage',
-  display: 'swap',
-})
+
+/** Marks JS as available before first paint, so .reveal elements only hide when they can be revealed. */
+const jsFlag = `document.documentElement.classList.add('js')`
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -40,7 +33,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0b0c14',
+  themeColor: '#0d0e11',
   colorScheme: 'dark',
 }
 
@@ -48,24 +41,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: introScript }} />
-        <noscript>
-          <style>{'.preloader{display:none!important}[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}'}</style>
-        </noscript>
+        <script dangerouslySetInnerHTML={{ __html: jsFlag }} />
       </head>
       <body>
-        <Background />
-        <Providers>
-          <Preloader />
-          <ScrollProgress />
-          {children}
-          <Cursor />
-          <Toaster theme="dark" position="bottom-right" richColors closeButton />
-        </Providers>
+        {children}
+        <RevealObserver />
+        <Toaster theme="dark" position="bottom-right" closeButton />
         <Analytics />
       </body>
     </html>

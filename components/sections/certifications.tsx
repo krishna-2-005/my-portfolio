@@ -1,24 +1,26 @@
-import CertCarousel from '@/components/certifications/cert-carousel'
+import CertList from '@/components/certifications/cert-list'
+import ExternalLink from '@/components/external-link'
 import Section from '@/components/section'
 import { certifications } from '@/content/certifications'
 import { profile } from '@/content/profile'
 
 export default function Certifications() {
   return (
-    <Section id="certifications" title="Certifications & Badges" eyebrow="08">
-      <CertCarousel certifications={certifications} />
-      <p className="mt-8 text-center text-sm text-muted-foreground">
-        Every badge is verifiable on{' '}
-        <a
-          href={profile.credly}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-medium text-primary underline-offset-4 hover:text-accent hover:underline"
-        >
-          my Credly profile<span className="sr-only"> (opens in a new tab)</span>
-        </a>
-        .
-      </p>
+    <Section
+      id="certifications"
+      title="Certifications & Badges"
+      tight
+      action={
+        <p className="text-small text-muted-foreground">
+          Every badge is verifiable on{' '}
+          <ExternalLink href={profile.credly} className="link tap inline-flex gap-1" arrow={false}>
+            my Credly profile
+          </ExternalLink>
+          .
+        </p>
+      }
+    >
+      <CertList certifications={certifications} />
     </Section>
   )
 }
