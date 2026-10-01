@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <radialGradient id="a" cx="72%" cy="32%" r="60%"><stop offset="0" stop-color="#a480ff" stop-opacity="0.55"/><stop offset="1" stop-color="#a480ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b" cx="15%" cy="90%" r="65%"><stop offset="0" stop-color="#6d3fd6" stop-opacity="0.7"/><stop offset="1" stop-color="#6d3fd6" stop-opacity="0"/></radialGradient>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0v40" fill="none" stroke="#fff" stroke-opacity="0.06"/></pattern>
+    <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0"/></filter>
+  </defs>
+  <rect width="1200" height="800" fill="#0a0b16"/>
+  <rect width="1200" height="800" fill="url(#b)"/>
+  <rect width="1200" height="800" fill="url(#a)"/>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <g>
+    <circle cx="620" cy="410" r="200" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M550 370c30-60 110-50 130 0s-10 100-70 100-90-40-60-100z" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" fill="#fff" fill-opacity="0.18" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M420 410h60M760 410h60M620 210v60M620 550v60" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="490" y="280" width="260" height="260" rx="18" stroke="#ffffff" stroke-opacity="0.5" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16 14"/></g>
+  <rect width="1200" height="800" filter="url(#n)"/>
+</svg>

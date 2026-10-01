@@ -12,14 +12,14 @@ export default function AppleIcon() {
           width: '100%',
           height: '100%',
           display: 'flex',
-          backgroundColor: '#9184f8',
+          backgroundImage: 'linear-gradient(135deg, #a480ff, #27e7f9)',
         }}
       >
         <svg width="180" height="180" viewBox="0 0 64 64">
           <path
             d="M22 15v34M22 33 41 15M29 27l14 22"
             fill="none"
-            stroke="#0d0e11"
+            stroke="#0a0b16"
             strokeWidth="7.5"
             strokeLinecap="round"
             strokeLinejoin="round"

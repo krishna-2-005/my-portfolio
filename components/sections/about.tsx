@@ -1,72 +1,62 @@
-import { Fragment } from 'react'
+import CountUp from '@/components/motion/count-up'
+import { Reveal, RevealItem } from '@/components/motion/reveal'
 import Section from '@/components/section'
+import SpotlightCard from '@/components/spotlight-card'
 import { certifications } from '@/content/certifications'
-import { achievements, education } from '@/content/experience'
-import { about, profile } from '@/content/profile'
+import { achievements } from '@/content/experience'
 import { projects } from '@/content/projects'
 
-/** Renders `**phrase**` markers from the content as emphasised text. */
-function Rich({ text }: { text: string }) {
-  return (
-    <>
-      {text.split('**').map((part, i) =>
-        i % 2 ? (
-          <strong key={i} className="font-medium text-foreground">
-            {part}
-          </strong>
-        ) : (
-          <Fragment key={i}>{part}</Fragment>
-        ),
-      )}
-    </>
-  )
-}
-
-// Facts already on the site — the degree entry, the focus areas and the content counts.
-const degree = education[0]
-const highlights = [
-  { label: 'Degree', value: `${degree.title.replace(' – ', ', ')}` },
-  { label: 'Institution', value: `${degree.institution} · ${degree.period}` },
-  { label: 'Focus', value: profile.focus.join(' · ') },
-  { label: 'Status', value: profile.status },
-]
+// Derived from the content files, so they stay true as projects and certificates are added.
 const stats = [
-  { value: projects.filter((p) => p.status === 'Deployed').length, label: 'Systems in production' },
-  { value: projects.length, label: 'Projects' },
+  { value: projects.filter((p) => p.status === 'Deployed').length, label: 'Systems live in production' },
+  { value: projects.length, label: 'Projects built' },
   { value: certifications.length, label: 'Certifications' },
-  { value: achievements.length, label: 'Awards' },
+  { value: achievements.length, label: 'Awards & wins' },
 ]
 
 export default function About() {
   return (
-    <Section id="about" title="About Me">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-12">
-        <div className="max-w-[68ch] space-y-4 text-muted-foreground">
-          {about.map((p) => (
-            <p key={p.slice(0, 24)}>
-              <Rich text={p} />
-            </p>
-          ))}
-        </div>
+    <Section id="about" title="About Me" eyebrow="01">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+        <Reveal className="space-y-6 text-lead text-muted-foreground" stagger={0.12}>
+          <RevealItem as="p">
+            I am a Computer Science (Data Science) undergraduate at NMIMS Hyderabad, passionate about building
+            practical, real-world software solutions that solve meaningful problems.
+          </RevealItem>
+          <RevealItem as="p">
+            What sets me apart is my experience in designing, developing, and deploying systems used by real users. I
+            have successfully deployed a{' '}
+            <span className="font-medium text-foreground">Diagnostics Center Management System in Vijayawada</span> and
+            an <span className="font-medium text-foreground">ICA Tracker system</span> used within my college, giving me
+            hands-on exposure to real operational environments beyond academic projects.
+          </RevealItem>
+          <RevealItem as="p">
+            My interests span <span className="font-medium text-primary">full-stack development</span>,{' '}
+            <span className="font-medium text-primary">data analytics</span>, and{' '}
+            <span className="font-medium text-primary">machine learning</span>, and I enjoy working at the intersection
+            of technology and impact. I actively participate in hackathons, technical events, and leadership roles,
+            constantly striving to improve both my technical and collaborative skills.
+          </RevealItem>
+          <RevealItem as="p">
+            I am currently seeking <span className="font-medium text-accent">internship opportunities</span> where I can
+            contribute to real products, learn from industry professionals, and grow as a software engineer and data
+            scientist.
+          </RevealItem>
+        </Reveal>
 
-        <div className="space-y-4">
-          <dl className="divide-y divide-border rounded-ui border border-border bg-surface">
-            {highlights.map((h) => (
-              <div key={h.label} className="grid grid-cols-[96px_1fr] gap-3 px-4 py-3">
-                <dt className="label-caps">{h.label}</dt>
-                <dd className="text-small text-foreground">{h.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <ul className="grid grid-cols-2 gap-2" aria-label="At a glance">
-            {stats.map((s) => (
-              <li key={s.label} className="rounded-ui border border-border bg-surface px-2 py-3 text-center">
-                <span className="block text-title tabular-nums text-foreground">{s.value}</span>
-                <span className="mt-0.5 block text-small leading-tight text-subtle-foreground">{s.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Reveal as="ul" className="grid h-fit grid-cols-2 gap-4 lg:sticky lg:top-28" stagger={0.1} aria-label="At a glance">
+          {stats.map((stat) => (
+            <RevealItem as="li" key={stat.label}>
+              <SpotlightCard className="flex h-full flex-col justify-between gap-6 rounded-2xl border border-border bg-surface-1/90 p-6">
+                <CountUp
+                  value={stat.value}
+                  className="text-gradient font-display text-[clamp(2.75rem,2rem+2.5vw,4rem)] font-semibold leading-none tracking-tight tabular-nums"
+                />
+                <span className="text-sm text-muted-foreground">{stat.label}</span>
+              </SpotlightCard>
+            </RevealItem>
+          ))}
+        </Reveal>
       </div>
     </Section>
   )

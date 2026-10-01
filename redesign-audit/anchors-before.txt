@@ -1,6 +1,0 @@
-#about
-#contact
-#home
-#main
-#projects
-#ring-path

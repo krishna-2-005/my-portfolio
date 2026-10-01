@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <radialGradient id="a" cx="72%" cy="32%" r="60%"><stop offset="0" stop-color="#fbbf24" stop-opacity="0.55"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b" cx="15%" cy="90%" r="65%"><stop offset="0" stop-color="#6d3fd6" stop-opacity="0.7"/><stop offset="1" stop-color="#6d3fd6" stop-opacity="0"/></radialGradient>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0v40" fill="none" stroke="#fff" stroke-opacity="0.06"/></pattern>
+    <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0"/></filter>
+  </defs>
+  <rect width="1200" height="800" fill="#0a0b16"/>
+  <rect width="1200" height="800" fill="url(#b)"/>
+  <rect width="1200" height="800" fill="url(#a)"/>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <g>
+    <rect x="420" y="250" width="400" height="320" rx="24" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M420 320h400M500 220v60M740 220v60" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="450" y="345" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="538" y="345" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="626" y="345" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="714" y="345" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="450" y="417" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="538" y="417" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="626" y="417" width="64" height="50" rx="8" fill="#fff" fill-opacity="0.9"/><rect x="714" y="417" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="450" y="489" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="538" y="489" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="626" y="489" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="714" y="489" width="64" height="50" rx="8" stroke="#ffffff" stroke-opacity="0.35" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <rect width="1200" height="800" filter="url(#n)"/>
+</svg>

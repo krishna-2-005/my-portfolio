@@ -3,43 +3,37 @@
 Personal portfolio of **Kuchuru Sai Krishna Reddy**, B.Tech CSE (Data Science) at NMIMS Hyderabad —
 full-stack and machine-learning developer with systems running in production.
 
-A compact, information-dense single-page portfolio built with Next.js 16, React 19 and Tailwind CSS v4,
-with a real contact form. Designed to be scanned quickly by recruiters and engineers.
+A single-page site built with Next.js 16, React 19, Tailwind CSS v4, Framer Motion, Lenis and
+React Three Fiber: a WebGL hero, smooth scrolling, scroll-driven animation, and a real contact form.
 
 ---
 
 ## Features
 
-- **Hero** — name, degree, focus areas, a one-line positioning statement, *View Projects* /
-  *Download Resume*, social links and a portrait (fits in about half the viewport).
-- **About** — the four About paragraphs beside a highlights panel and counts computed from the content.
-- **Skills** — six labelled groups of chips.
-- **Projects** — *Full Stack* and *AI / ML* groups, two-column cards with status, period, a clamped
-  description (*Show more*), headline result, tech chips, and *Live Demo* / *GitHub* actions.
-- **Experience, Education, Achievements, Leadership** — compact rows sharing one title / meta / action
-  component; each keeps its own anchor.
-- **Certifications** — a two-column credentials list (provider mark, name, provider · date,
-  *View Credential*); certificate images open on demand in a native `<dialog>`.
+- **Hero** — cut-out portrait rising out of a glowing disc, floating fact badges, a rotating text
+  ring and a 3D pointer tilt; letter-by-letter name reveal after a short `KSK.` intro; magnetic CTAs;
+  a WebGL sparkle field with mouse parallax (desktop only, loaded after the intro).
+- **Smooth scroll** (Lenis) with a progress bar, section headings that fill with the brand gradient
+  as you scroll, and staggered reveals.
+- **Skills** — bento grid with brand logos (simple-icons) and a pointer spotlight.
+- **Projects** — *Full Stack* / *AI & ML* tabs over a sticky stacked card deck (cards pin and scale
+  back as the next one lands), generated SVG covers, status badges, live-demo and GitHub links.
+- **Timeline** — Experience, Education, Achievements and Leadership on one rail that draws itself as
+  you scroll; each keeps its own anchor for the navigation.
+- **Certifications** — coverflow carousel (Embla) with a full-size viewer dialog.
 - **Contact** — validated form (react-hook-form + zod) posting to a Resend route handler with a
   honeypot, per-IP rate limiting and toasts; falls back to the visitor's mail app when email isn't set up.
-- **Navigation** — sticky 60px header, secondary sections under *More* on desktop, a full list in the
-  mobile menu, active-section highlighting.
+- **Custom cursor**, animated mobile menu, scroll-spy navigation, footer with back-to-top.
 - **SEO** — Open Graph / Twitter cards with a generated share image, `sitemap.xml`, `robots.txt`,
   generated favicon and Apple touch icon.
 
-### Design system
-
-All tokens live in [`app/globals.css`](app/globals.css): a 5-step type scale (44/30/18/15/13px,
-32/24 on mobile), an 8px spacing rhythm (sections 64px / 44px), one 10px radius, dark neutral surfaces
-with three text tiers, and a single accent (`#9184f8`) for links, the primary button, the active nav
-item and focus rings. Hover transitions are 180ms; sections fade in once (250ms).
-
 ### Accessibility and motion
 
-- `prefers-reduced-motion` disables the reveal and smooth scrolling.
-- One `<h1>`, an `<h2>` per section, `<h3>` item titles, landmarks, a skip link, `aria-current` on the
-  active nav link, keyboard-operable menus and dialog, visible focus rings, 40px touch targets on phones,
-  and text contrast of at least 5.5:1.
+- `prefers-reduced-motion` turns off the intro, smooth scroll, cursor, parallax, tilt, magnetic
+  buttons and 3D motion; content is shown statically.
+- One `<h1>`, every section labelled by its heading, `aria-current` on the active nav link, a skip
+  link, keyboard-operable tabs, carousel and dialog, and visible focus rings.
+- The custom cursor only exists on devices with a real mouse.
 
 ---
 
@@ -59,7 +53,7 @@ pnpm dev                     # http://localhost:3000
 | `pnpm build` | Production build (type-checked) |
 | `pnpm start` | Serve the production build |
 | `pnpm lint` | ESLint |
-| `node redesign-audit/inventory.mjs` | Print the full content inventory (used to verify no content is lost) |
+| `node scripts/generate-project-covers.mjs` | Regenerate the SVG project covers in `public/projects/` |
 
 ### Environment variables
 
@@ -80,14 +74,15 @@ All text lives in typed files under [`content/`](content) — components are pre
 
 | File | Contents |
 |---|---|
-| [`content/profile.ts`](content/profile.ts) | Name, headline, About paragraphs, links, résumé URL, contact details, navigation |
+| [`content/profile.ts`](content/profile.ts) | Name, headline, links, résumé URL, contact details, navigation |
 | [`content/projects.ts`](content/projects.ts) | Projects, their category (`fullstack` / `aiml`), status, links and highlights |
 | [`content/experience.ts`](content/experience.ts) | Experience, education, achievements, leadership |
-| [`content/skills.ts`](content/skills.ts) | Skill groups |
+| [`content/skills.ts`](content/skills.ts) · [`content/skill-icons.ts`](content/skill-icons.ts) | Skill categories and their logos |
 | [`content/certifications.ts`](content/certifications.ts) | Certifications, credential links, images in `public/certificates/` |
 
-Adding a project: add an entry to `content/projects.ts` with its `category`. The About counts are
-computed from these files.
+Adding a project: add an entry to `content/projects.ts`, add its slug and status to the list at the
+bottom of `scripts/generate-project-covers.mjs` (with a motif), and run the script. The About-section
+counters are computed from these files.
 
 ---
 
@@ -96,14 +91,16 @@ computed from these files.
 ```
 app/            layout, page, globals.css, /api/contact, OG image, icons, sitemap, robots
 components/
+  hero/         portrait, tilt card, name reveal, canvas loader
+  three/        React Three Fiber scene
+  motion/       preloader, cursor, reveals, section headings, scroll progress, magnetic
+  projects/     project tabs + sticky deck
+  certifications/ coverflow carousel + viewer
   sections/     one component per page section
-  projects/     project card + clamped description
-  certifications/ credentials list + preview dialog
-  item-row.tsx  shared title / meta / action row
-  section.tsx   section shell (anchor, <h2>, spacing)
+  providers/    Lenis smooth scroll + Framer Motion config
 content/        all site content (typed)
 lib/            motion tokens, media-query hooks, contact schema, site URL
-redesign-audit/ before/after audit, content inventory, link lists, acceptance report
+scripts/        project cover generator
 ```
 
 ---
@@ -114,11 +111,18 @@ Measured with Lighthouse 12 against a local production build (`pnpm build && pnp
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| Mobile (simulated slow 4G, 4× CPU) | 94–95 | 100 | 96* | 100 |
-| Desktop | 100 | 100 | 96* | 100 |
+| Mobile (simulated slow 4G, 4× CPU) | 79–80 | 100 | 96* | 100 |
+| Desktop | 95–98 | 100 | 96* | 100 |
 
-* The only Best Practices failure locally is the Vercel Analytics script returning 404, which only
-exists on Vercel. Cumulative Layout Shift is 0. No 3D or animation libraries ship to the browser.
+\* The only Best Practices failure locally is the Vercel Analytics script returning 404, which only
+exists on Vercel. Cumulative Layout Shift is 0 on both. On mobile the simulated LCP (~4 s) is the
+remaining gap to 85+: in the unthrottled trace the hero paints at about 1.0 s, but Lighthouse's
+simulation adds the JavaScript that runs before that first frame.
+
+What keeps it fast: hero content is server-rendered and animated with CSS (it paints on the first
+frame); three.js loads only after the intro, when the browser is idle, and never on phones,
+data-saver or low-core devices; the 3D canvas pauses off-screen and caps its pixel ratio; images are
+served as AVIF/WebP through `next/image`.
 
 ---
 
